@@ -4,6 +4,13 @@ set(CMAKE_CXX_STANDARD 17)
 # set project name
 project(OpenGLSandbox)
 
+IF (WIN32)
+	# OpenGL
+	find_package(OpenGL REQUIRED)
+	add_subdirectory(${CMAKE_SOURCE_DIR}/windows/glfw-3.3.2)
+	include_directories(${CMAKE_SOURCE_DIR}windows/glfw-3.3.2/include)
+ENDIF()
+
 # Add source files
 file(GLOB_RECURSE SOURCE_FILES
 	${CMAKE_SOURCE_DIR}/src/*.c
@@ -34,3 +41,7 @@ include_directories(
 set(LIBS glfw glad ${CMAKE_DL_LIBS})
 # link libraries
 target_link_libraries(${PROJECT_NAME} ${LIBS})
+
+IF (WIN32)
+	target_link_libraries(${PROJECT_NAME} glfw ${GLFW_LIBRARIES})
+ENDIF()
