@@ -5,10 +5,12 @@
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void processInput(GLFWwindow *window);
+int centerScreen(GLFWwindow* window);
 
 // settings
 const unsigned int SCR_WIDTH = 800;
 const unsigned int SCR_HEIGHT = 600;
+
 
 int main()
 {
@@ -30,6 +32,10 @@ int main()
         glfwTerminate();
         return -1;
     }
+
+    if (centerScreen(window) == -1)
+        return -1;
+
     glfwMakeContextCurrent(window);
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 
@@ -68,6 +74,32 @@ void processInput(GLFWwindow *window)
 {
     if(glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
         glfwSetWindowShouldClose(window, true);
+}
+
+/**
+ * set window to center of screen
+ * @param window
+ * @return
+ */
+int centerScreen(GLFWwindow *window)
+{
+    GLFWmonitor *monitor = glfwGetPrimaryMonitor();
+    if (!monitor)
+        return -1;
+
+    const GLFWvidmode *mode = glfwGetVideoMode(monitor);
+    if (!mode)
+        return -1;
+
+    int monitorX, monitorY;
+    glfwGetMonitorPos(monitor, &monitorX, &monitorY);
+
+    int windowWidth, windowHeight;
+    glfwGetWindowSize(window, &windowWidth, &windowHeight);
+
+    glfwSetWindowPos(window,
+                     monitorX + (mode->width - windowWidth) / 2,
+                     monitorY + (mode->height - windowHeight) / 2);
 }
 
 /**
