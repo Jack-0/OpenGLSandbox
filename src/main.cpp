@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <string>
+#include "Shader.h"
 
 // functions
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
@@ -16,37 +17,12 @@ static unsigned int CreateShader(const std::string& vertexShader, const std::str
 const unsigned int SCR_WIDTH = 800;
 const unsigned int SCR_HEIGHT = 600;
 
-// consts
-const std::string vertShader =
-        "#version 330 core\n"
-        "layout (location = 0) in vec3 aPos;\n"
-        "layout (location = 1) in vec3 aColor;\n"
-        "out vec3 ourColor;\n"
-        "void main()\n"
-        "{\n"
-        "   gl_Position = vec4(aPos, 1.0);\n"
-        "   ourColor = aColor;\n"
-        "}\0";
-
-const std::string fragShader =
-        "#version 330 core\n"
-        "out vec4 FragColor;\n"
-        "in vec3 ourColor;\n"
-        "void main()\n"
-        "{\n"
-        "   FragColor = vec4(ourColor, 1.0f);\n"
-        "}\n\0";
-
-
 int main()
 {
     GLFWwindow* window = create_window();
     if (window == nullptr)
         return -1;
 
-
-    // create frag and vertex shader program
-    unsigned int shader = CreateShader(vertShader, fragShader);
 
     // set up vertex data (and buffer(s)) and configure vertex attributes
     float vertices[] = {
@@ -77,15 +53,15 @@ int main()
     //glBindVertexArray(0);
 
     // as we only have a single shader, we could also just activate our shader once beforehand if we want to
-    glUseProgram(shader);
-
-
+    Shader shader_test("../res/shaders/basic.vert", "../res/shaders/basic.frag");
+    shader_test.use();
 
     // render loop
     while (!glfwWindowShouldClose(window))
     {
         // input
         processInput(window);
+
 
         // render
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
@@ -200,54 +176,4 @@ GLFWwindow* create_window()
     std::cout << "OpenGL Version: " << glGetString(GL_VERSION) << std::endl;
 
     return window;
-}
-
-
-/**
- * compile shader
- * @param type
- * @param source
- * @return
- */
-static unsigned int CompileShader( unsigned int type, const std::string& source)
-{
-    unsigned int id = glCreateShader(type);
-    const char* src = source.c_str();
-    glShaderSource(id, 1, &src, nullptr);
-    glCompileShader(id);
-
-    // error handling
-    int result;
-    glGetShaderiv(id, GL_COMPILE_STATUS, &result);
-    if (result == GL_FALSE)
-    {
-        int length;
-        glGetShaderiv(id, GL_INFO_LOG_LENGTH, &length);
-        char* message = (char*)alloca(length * sizeof(char)); // allocate on stack dynamically
-        glGetShaderInfoLog(id, length, &length, message);
-        std::cout << "Failed to compile " << (type == GL_VERTEX_SHADER ? "vertex" : "fragment") << " shader!\n" << message << std::endl;
-        glDeleteShader(id);
-        return 0;
-    }
-
-    return id;
-}
-
-
-static unsigned int CreateShader(const std::string& vertexShader, const std::string& fragmentShader)
-{
-    unsigned int program = glCreateProgram();
-    unsigned int vs = CompileShader(GL_VERTEX_SHADER, vertexShader);
-    unsigned int fs = CompileShader(GL_FRAGMENT_SHADER, fragmentShader);
-
-    glAttachShader(program, vs);
-    glAttachShader(program, fs);
-    glLinkProgram(program);
-
-    glValidateProgram(program);
-
-    glDeleteShader(vs);
-    glDeleteShader(fs);
-
-    return program;
 }
