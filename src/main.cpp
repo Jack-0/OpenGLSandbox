@@ -5,6 +5,9 @@
 #include <string>
 #include "Shader.h"
 
+#define STB_IMAGE_IMPLEMENTATION
+#include "std_image.h"
+
 // functions
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void processInput(GLFWwindow *window);
@@ -55,6 +58,9 @@ int main()
     // as we only have a single shader, we could also just activate our shader once beforehand if we want to
     Shader shader_test("../res/shaders/basic.vert", "../res/shaders/basic.frag");
     shader_test.use();
+
+    int width, height, nrChannels;
+    unsigned char *data = stbi_load("../res/img/container.jpg", &width, &height, &nrChannels, 0);
 
     // render loop
     while (!glfwWindowShouldClose(window))

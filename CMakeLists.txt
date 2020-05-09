@@ -25,7 +25,7 @@ file(GLOB_RECURSE HEADER_FILES
 set(LIB_DIR ${CMAKE_SOURCE_DIR}/libs)
 
 # created exe using variables
-add_executable(${PROJECT_NAME} ${HEADER_FILES} ${SOURCE_FILES} src/Shader.cpp src/Shader.h)
+add_executable(${PROJECT_NAME} ${HEADER_FILES} ${SOURCE_FILES} src/Shader.cpp src/Shader.h src/std_image.h)
 
 # glad
 set(GLAD_DIR "${LIB_DIR}/glad")
