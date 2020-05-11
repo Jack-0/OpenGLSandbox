@@ -88,9 +88,6 @@ int main()
     // or set it via the texture class
     shader_test.setInt("texture2", 1);
 
-    // apply matrix transformation
-
-    glm::mat4 trans = glm::mat4(1.0f);
 
     // render loop
     while (!glfwWindowShouldClose(window))
@@ -102,13 +99,23 @@ int main()
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
 
-        unsigned int transformLoc = glGetUniformLocation(shader_test.program_id, "transform");   //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE); // change poly mode to only show lines
-        if(glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS)
-        {
-            trans = glm::translate(trans, glm::vec3(0.0f, 0.0f, 0.0f));
-            trans = glm::rotate(trans, 0.1f, glm::vec3(0.0f, 0.0f, 1.0f));
-        }
-        glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(trans));
+        // 3d
+        // create transformations
+        glm::mat4 model         = glm::mat4(1.0f); // make sure to initialize matrix to identity matrix first
+        glm::mat4 view          = glm::mat4(1.0f);
+        glm::mat4 projection    = glm::mat4(1.0f);
+        model = glm::rotate(model, glm::radians(-55.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+        view  = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));
+        projection = glm::perspective(glm::radians(45.0f), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
+        // retrieve the matrix uniform locations
+        unsigned int modelLoc = glGetUniformLocation(shader_test.program_id, "model");
+        unsigned int viewLoc  = glGetUniformLocation(shader_test.program_id, "view");
+        // pass them to the shaders (3 different ways)
+        glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+        glUniformMatrix4fv(viewLoc, 1, GL_FALSE, &view[0][0]);
+        // note: currently we set the projection matrix each frame, but since the projection matrix rarely changes it's often best practice to set it outside the main loop only once.
+        shader_test.setMat4("projection", projection);
+
 
         // render the triangle
         glActiveTexture(GL_TEXTURE0);
