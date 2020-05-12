@@ -18,7 +18,7 @@
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void processInput(GLFWwindow *window);
 int centerWindow(GLFWwindow* window);
-unsigned int createTexture(char* file_path, int32_t internalFormat);
+unsigned int createTexture(std::string file_path, int32_t internalFormat);
 GLFWwindow* create_window();
 static unsigned int CompileShader( unsigned int type, const std::string& source);
 static unsigned int CreateShader(const std::string& vertexShader, const std::string& fragmentShader);
@@ -189,7 +189,7 @@ int main()
     return 0;
 }
 
-unsigned int createTexture(char* file_path, int32_t internalFormat)
+unsigned int createTexture(std::string file_path, int32_t internalFormat)
 {
 // texture
     unsigned int texture;
@@ -202,7 +202,7 @@ unsigned int createTexture(char* file_path, int32_t internalFormat)
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     // load and generate the texture
     int width, height, nrChannels;
-    unsigned char *data = stbi_load(file_path, &width, &height, &nrChannels, 0);
+    unsigned char *data = stbi_load(file_path.c_str(), &width, &height, &nrChannels, 0);
     if (data)
     {
         glTexImage2D(GL_TEXTURE_2D, 0, internalFormat, width, height, 0, internalFormat, GL_UNSIGNED_BYTE, data);
