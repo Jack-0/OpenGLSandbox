@@ -35,6 +35,8 @@ bool firstMouse = true;
 // timing
 float deltaTime = 0.0f;	// time between current frame and last frame
 float lastFrame = 0.0f;
+// options
+bool wireframe = false;
 
 
 int main()
@@ -96,6 +98,7 @@ int main()
             -0.5f,  0.5f,  0.5f,  0.0f, 0.0f,
             -0.5f,  0.5f, -0.5f,  0.0f, 1.0f
     };
+
     // world space positions of our cubes
     glm::vec3 cubePositions[] = {
             glm::vec3( 0.0f,  0.0f,  0.0f),
@@ -152,6 +155,12 @@ int main()
     // render loop
     while (!glfwWindowShouldClose(window))
     {
+        if(wireframe)
+            glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
+        else
+            glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
+
+
         float currentFrame = glfwGetTime();
         deltaTime = currentFrame - lastFrame;
         lastFrame = currentFrame;
@@ -267,7 +276,11 @@ void processInput(GLFWwindow *window)
         camera.ProcessKeyboard(LEFT, deltaTime);
     if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
         camera.ProcessKeyboard(RIGHT, deltaTime);
-
+    // view wire frames when holding 'E'
+    if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS)
+        wireframe = true;
+    else
+        wireframe = false;
 }
 
 
