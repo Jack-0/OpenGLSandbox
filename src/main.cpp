@@ -8,11 +8,11 @@
 
 #include <iostream>
 #include <string>
-#include "Shader.h"
+#include "graphics/Shader.h"
 
 #define STB_IMAGE_IMPLEMENTATION
 #include "std_image.h"
-#include "Camera.h"
+#include "graphics/Camera.h"
 
 // callbacks
 void mouse_callback(GLFWwindow* window, double xpos, double ypos);
@@ -131,12 +131,12 @@ int main()
     // as we only have a single shader, we could also just activate our shader once beforehand if we want to
     Shader shader_test("../res/shaders/basic.vert", "../res/shaders/basic.frag");
 
-    unsigned int texture1 = createTexture("../res/img/container.jpg", GL_RGB);
+    unsigned int texture1 = createTexture("../res/textures/container.jpg", GL_RGB);
 
     // flip face
     stbi_set_flip_vertically_on_load(true);
 
-    unsigned int texture2 = createTexture("../res/img/awesomeface.png", GL_RGBA);
+    unsigned int texture2 = createTexture("../res/textures/awesomeface.png", GL_RGBA);
 
     // either set it manually like so:
     // or set it via the texture class
