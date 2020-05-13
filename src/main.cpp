@@ -100,18 +100,30 @@ int main()
     };
 
     // world space positions of our cubes
-    glm::vec3 cubePositions[] = {
-            glm::vec3( 0.0f,  0.0f,  0.0f),
-            glm::vec3( 2.0f,  5.0f, -15.0f),
-            glm::vec3(-1.5f, -2.2f, -2.5f),
-            glm::vec3(-3.8f, -2.0f, -12.3f),
-            glm::vec3( 2.4f, -0.4f, -3.5f),
-            glm::vec3(-1.7f,  3.0f, -7.5f),
-            glm::vec3( 1.3f, -2.0f, -2.5f),
-            glm::vec3( 1.5f,  2.0f, -2.5f),
-            glm::vec3( 1.5f,  0.2f, -1.5f),
-            glm::vec3(-1.3f,  1.0f, -1.5f)
-    };
+    unsigned int cubeMult = 16;
+    unsigned int cubes = cubeMult * cubeMult * cubeMult;
+    glm::vec3 cubePositions[cubes];
+    int xCubePos = 0;
+    int yCubePos = 0;
+    int zCubePos = 0;
+
+    unsigned int x,y,z;
+    x = y = z = 0;
+
+    for(int count = 0; count <= cubes; count++){
+        cubePositions[count] = glm::vec3(x,y,z);
+        x++;
+        if (x >= cubeMult){
+            y++;
+            x = 0;
+        }
+        if (y >= cubeMult){
+            z++;
+            y = 0;
+        }
+    }
+
+
     unsigned int VBO, VAO;
     glGenVertexArrays(1, &VAO);
     glGenBuffers(1, &VBO);
@@ -191,23 +203,24 @@ int main()
 
         // render boxes
         glBindVertexArray(VAO);
-        for(unsigned int i = 0; i < 10; i++)
+        for(unsigned int i = 0; i < cubes; i++)
         {
             shader_test.setMat4("view", view);
             // calculate the model matrix for each object and pass it to shader before drawing
             glm::mat4 model = glm::mat4(1.0f);
             model = glm::translate(model, cubePositions[i]);
+            /*
             float angle = 20.0f * i;
             if(i % 3 == 0)  // every 3rd iteration (including the first) we set the angle using GLFW's time function.
                 angle = glfwGetTime() * 25.0f;
             else
                 angle = glfwGetTime() * -25.0f;
             model = glm::rotate(model, glm::radians(angle), glm::vec3(1.0f, 0.3f, 0.5f));
+            */
             shader_test.setMat4("model", model);
 
             glDrawArrays(GL_TRIANGLES, 0, 36);
         }
-
         // swap front and back buffers
         glfwSwapBuffers(window);
         // poll
