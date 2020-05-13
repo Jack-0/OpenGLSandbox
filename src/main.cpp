@@ -14,28 +14,24 @@
 #include "std_image.h"
 #include "Camera.h"
 
-// functions
+// callbacks
 void mouse_callback(GLFWwindow* window, double xpos, double ypos);
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
-
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
+// functions
 void processInput(GLFWwindow *window);
 int centerWindow(GLFWwindow* window);
 unsigned int createTexture(std::string file_path, int32_t internalFormat);
 GLFWwindow* create_window();
-static unsigned int CompileShader( unsigned int type, const std::string& source);
-static unsigned int CreateShader(const std::string& vertexShader, const std::string& fragmentShader);
 
-// settings
+// window size
 const unsigned int SCR_WIDTH = 800;
 const unsigned int SCR_HEIGHT = 600;
-
 // camera
 Camera camera(glm::vec3(0.0f, 0.0f, 3.0f));
 float lastX = SCR_WIDTH / 2.0f;
 float lastY = SCR_HEIGHT / 2.0f;
 bool firstMouse = true;
-
 // timing
 float deltaTime = 0.0f;	// time between current frame and last frame
 float lastFrame = 0.0f;
@@ -217,6 +213,13 @@ int main()
     return 0;
 }
 
+
+/**
+ * Creates a texture within OpenGL
+ * @param file_path
+ * @param internalFormat
+ * @return
+ */
 unsigned int createTexture(std::string file_path, int32_t internalFormat)
 {
 // texture
@@ -251,9 +254,11 @@ unsigned int createTexture(std::string file_path, int32_t internalFormat)
  */
 void processInput(GLFWwindow *window)
 {
+    // escape key closes window
     if(glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
         glfwSetWindowShouldClose(window, true);
 
+    // set WASD to camera movement
     if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
         camera.ProcessKeyboard(FORWARD, deltaTime);
     if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
@@ -273,24 +278,23 @@ void processInput(GLFWwindow *window)
  */
 int centerWindow(GLFWwindow *window)
 {
+    // get monitor
     GLFWmonitor *monitor = glfwGetPrimaryMonitor();
     if (!monitor)
         return -1;
-
+    // vid mode
     const GLFWvidmode *mode = glfwGetVideoMode(monitor);
     if (!mode)
         return -1;
-
+    // get monitor pos and size
     int monitorX, monitorY;
     glfwGetMonitorPos(monitor, &monitorX, &monitorY);
-
     int windowWidth, windowHeight;
     glfwGetWindowSize(window, &windowWidth, &windowHeight);
-
+    // set pos to screen center
     glfwSetWindowPos(window,
                      monitorX + (mode->width - windowWidth) / 2,
                      monitorY + (mode->height - windowHeight) / 2);
-
     return 0;
 }
 
@@ -344,30 +348,42 @@ GLFWwindow* create_window()
         std::cout << "Failed to initialize GLAD" << std::endl;
         return nullptr;
     }
-
+    // print opengl version
     std::cout << "OpenGL Version: " << glGetString(GL_VERSION) << std::endl;
-
     return window;
 }
 
+
+/**
+ * Mouse callback that changes the camera view based on mouse movements
+ * @param window
+ * @param xpos
+ * @param ypos
+ */
 void mouse_callback(GLFWwindow* window, double xpos, double ypos)
 {
+    // save last position as new pos
     if (firstMouse)
     {
         lastX = xpos;
         lastY = ypos;
         firstMouse = false;
     }
-
     float xoffset = xpos - lastX;
     float yoffset = lastY - ypos; // reversed since y-coordinates go from bottom to top
-
     lastX = xpos;
     lastY = ypos;
-
+    // move camera by new mouse movement
     camera.ProcessMouseMovement(xoffset, yoffset);
 }
 
+
+/**
+ * Scroll callback that zooms in the camera based on mouse scroll
+ * @param window
+ * @param xoffset
+ * @param yoffset
+ */
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
 {
     camera.ProcessMouseScroll(yoffset);
