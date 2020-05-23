@@ -1,4 +1,5 @@
 # OpenGL Sandbox
+Writing code to learn OpenGL via https://learnopengl.com/.
 
-Writing code to learn OpenGL :cake:
-
+## Note
+The code is compiled using cmake and can be compiled and runs on both Linux and Windows.
