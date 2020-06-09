@@ -32,6 +32,9 @@ bool firstMouse = true;
 float deltaTime = 0.0f;
 float lastFrame = 0.0f;
 
+// misc
+bool wireframe = false;
+
 int main()
 {
     // glfw: initialize and configure
@@ -89,8 +92,6 @@ int main()
     float previousFrame = glfwGetTime();
     int frameCount = 0;
 
-    // draw in wireframe
-    //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
     // render loop
     // -----------
@@ -170,6 +171,12 @@ void processInput(GLFWwindow *window)
         camera.ProcessKeyboard(LEFT, deltaTime);
     if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
         camera.ProcessKeyboard(RIGHT, deltaTime);
+
+    // wireframe
+    if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS)
+        wireframe = true;
+    else
+        wireframe = false;
 }
 
 // glfw: whenever the window size changed (by OS or user resize) this callback function executes
