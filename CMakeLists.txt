@@ -25,7 +25,7 @@ file(GLOB_RECURSE HEADER_FILES
 set(LIB_DIR ${CMAKE_SOURCE_DIR}/libs)
 
 # created exe using variables
-add_executable(${PROJECT_NAME} ${HEADER_FILES} ${SOURCE_FILES} src/graphics/Shader.cpp src/graphics/Shader.h include/std_image.h src/graphics/Camera.h)
+add_executable(${PROJECT_NAME} ${HEADER_FILES} ${SOURCE_FILES} src/graphics/Shader.h include/std_image.h src/graphics/Camera.h src/util/Model.h src/graphics/Mesh.h)
 
 # glad
 set(GLAD_DIR "${LIB_DIR}/glad")
@@ -38,7 +38,7 @@ include_directories(
 )
 
 # set libraries
-set(LIBS glfw glad ${CMAKE_DL_LIBS})
+set(LIBS glfw glad assimp ${CMAKE_DL_LIBS})
 # link libraries
 target_link_libraries(${PROJECT_NAME} ${LIBS})
 
