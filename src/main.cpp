@@ -151,19 +151,32 @@ int main()
     lightingShader.setInt("material.diffuse", 0);
     lightingShader.setInt("material.specular", 1);
 
+    // fps vars
+    float previousFrame = glfwGetTime();
+    int frameCount = 0;
 
     // render loop
     while (!glfwWindowShouldClose(window))
     {
-        if(wireframe)
-            glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
-        else
-            glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
-
         // per-frame time logic
         float currentFrame = glfwGetTime();
         deltaTime = currentFrame - lastFrame;
         lastFrame = currentFrame;
+
+        // calculate fps
+        frameCount++;
+        if ( currentFrame - previousFrame >= 1.0)
+        {
+            std::cout << "FPS=" << frameCount << std::endl;
+            frameCount = 0;
+            previousFrame = currentFrame;
+        }
+
+        // switch between wireframe or fill draw modes
+        if(wireframe)
+            glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
+        else
+            glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
 
         // input
         processInput(window);
