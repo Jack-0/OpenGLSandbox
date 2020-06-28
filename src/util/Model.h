@@ -24,7 +24,6 @@
 #include <vector>
 #include <std_image.h>
 
-
 using namespace std;
 
 unsigned int TextureFromFile(const char *path, const string &directory, bool gamma = false);
@@ -179,6 +178,9 @@ private:
         {
             aiString str;
             mat->GetTexture(type, i, &str);
+
+            std::cout << "test = " << str.C_Str() << " &" << &str <<"\n";
+
             // check if texture was loaded before and if so, continue to next iteration: skip loading a new texture
             bool skip = false;
             for(unsigned int j = 0; j < textures_loaded.size(); j++)
@@ -244,5 +246,5 @@ unsigned int TextureFromFile(const char *path, const string &directory, bool gam
 
     return textureID;
 }
+#endif
 
-#endif //OPENGLSANDBOX_MODEL_H
