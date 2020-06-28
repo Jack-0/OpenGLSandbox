@@ -31,6 +31,11 @@ add_executable(${PROJECT_NAME} ${HEADER_FILES} ${SOURCE_FILES})
 set(GLAD_DIR "${LIB_DIR}/glad")
 add_library("glad" "${GLAD_DIR}/src/glad.c")
 
+# arch linux solution (remove for other OS's)
+set(ASSIMP_LIBRARY "assimp")
+add_library(${ASSIMP_LIBRARY} SHARED IMPORTED)
+set_target_properties(${ASSIMP_LIBRARY} PROPERTIES IMPORTED_LOCATION "/usr/local/lib/libassimp.so.4")
+
 # Define the include DIRs
 include_directories(
 	"${CMAKE_SOURCE_DIR}/src"
