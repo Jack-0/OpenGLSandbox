@@ -179,7 +179,13 @@ private:
             aiString str;
             mat->GetTexture(type, i, &str);
 
-            std::cout << "test = " << str.C_Str() << " &" << &str <<"\n";
+            // hacks to fix assimp 5.0 issue will break if textures have version numbers
+            if(typeName.compare("texture_diffuse") == 0)
+                str = "diffuse.jpg";
+            if(typeName.compare("texture_specular") == 0)
+                str = "specular.jpg";
+            if(typeName.compare("texture_normal") == 0)
+                str = "normal.jpg";
 
             // check if texture was loaded before and if so, continue to next iteration: skip loading a new texture
             bool skip = false;
