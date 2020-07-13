@@ -4,12 +4,17 @@ set(CMAKE_CXX_STANDARD 17)
 # set project name
 project(OpenGLSandbox)
 
-IF (WIN32)
-	# OpenGL
-	find_package(OpenGL REQUIRED)
-	add_subdirectory(${CMAKE_SOURCE_DIR}/windows/glfw-3.3.2)
-	include_directories(${CMAKE_SOURCE_DIR}windows/glfw-3.3.2/include)
-ENDIF()
+# add opengl
+find_package(OpenGL REQUIRED)
+add_subdirectory(${CMAKE_SOURCE_DIR}/include/glfw-3.3.2)
+include_directories(${CMAKE_SOURCE_DIR}/include/glfw-3.3.2/include)
+
+# add assimp
+add_subdirectory(${CMAKE_SOURCE_DIR}/include/assimp-4.0.1)
+include_directories(${CMAKE_SOURCE_DIR}/include/assimp-4.0.1/include)
+
+# glad
+add_library("glad" "${CMAKE_SOURCE_DIR}/include/glad/src/glad.c")
 
 # Add source files
 file(GLOB_RECURSE SOURCE_FILES
@@ -21,20 +26,8 @@ file(GLOB_RECURSE HEADER_FILES
 	${CMAKE_SOURCE_DIR}/src/*.h
 	${CMAKE_SOURCE_DIR}/src/*.hpp)
 
-# set library directory
-set(LIB_DIR ${CMAKE_SOURCE_DIR}/libs)
-
 # created exe using variables
 add_executable(${PROJECT_NAME} ${HEADER_FILES} ${SOURCE_FILES})
-
-# glad
-set(GLAD_DIR "${LIB_DIR}/glad")
-add_library("glad" "${GLAD_DIR}/src/glad.c")
-
-# arch linux solution (remove for other OS's)
-set(ASSIMP_LIBRARY "assimp")
-add_library(${ASSIMP_LIBRARY} SHARED IMPORTED)
-set_target_properties(${ASSIMP_LIBRARY} PROPERTIES IMPORTED_LOCATION "/usr/local/lib/libassimp.so.4")
 
 # Define the include DIRs
 include_directories(
@@ -44,9 +37,6 @@ include_directories(
 
 # set libraries
 set(LIBS glfw glad assimp ${CMAKE_DL_LIBS})
-# link libraries
-target_link_libraries(${PROJECT_NAME} ${LIBS})
 
-IF (WIN32)
-	target_link_libraries(${PROJECT_NAME} glfw ${GLFW_LIBRARIES})
-ENDIF()
+# link libraries
+target_link_libraries(${PROJECT_NAME} ${LIBS} glfw ${GLFW_LIBRARIES})
