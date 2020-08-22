@@ -27,7 +27,7 @@ file(GLOB_RECURSE HEADER_FILES
 	${CMAKE_SOURCE_DIR}/src/*.hpp)
 
 # created exe using variables
-add_executable(${PROJECT_NAME} ${HEADER_FILES} ${SOURCE_FILES})
+add_executable(${PROJECT_NAME} ${HEADER_FILES} ${SOURCE_FILES} )
 
 # Define the include DIRs
 include_directories(
