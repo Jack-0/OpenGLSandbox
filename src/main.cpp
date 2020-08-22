@@ -1,8 +1,6 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
-#include <assimp/Importer.hpp>
-
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
@@ -12,6 +10,8 @@
 #define STB_IMAGE_IMPLEMENTATION
 #include "graphics/Camera.h"
 #include "util/Model.h"
+
+#include "Game.h"
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void mouse_callback(GLFWwindow* window, double xpos, double ypos);
@@ -37,6 +37,8 @@ bool wireframe = false;
 
 int main()
 {
+    Game::Instance()->init();
+
     // glfw: initialize and configure
     // ------------------------------
     glfwInit();
