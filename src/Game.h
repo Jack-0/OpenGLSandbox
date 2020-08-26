@@ -15,6 +15,9 @@
 // setup to be a opengl wrapper
 #include <graphics/Shader.h>
 
+#include <util/Model.h>
+#include <graphics/Camera.h>
+
 class Game
 {
 public:
@@ -63,6 +66,10 @@ private:
     GameStateMachine* m_pGameStateMachine;
 
     GLFWwindow* m_window;
+
+    Camera* m_camera;
+    Shader* ourShader;
+    Model* ourModel;
 };
 
 
