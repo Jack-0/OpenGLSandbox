@@ -4,9 +4,9 @@
 
 #include <state/TestState.h>
 #include <std_image.h>
+#define STB_IMAGE_IMPLEMENTATION
 #include <glad/glad.h>
 #include "Game.h"
-
 
 Game* Game::s_pInstance = 0; // singleton
 
@@ -68,35 +68,22 @@ int Game::init(int window_width, int window_height)
     if ( initGL() == -1 )
         return -1;
 
+
     // build and compile shaders
     // -------------------------
+
+    // TODO test
+    m_camera = new Camera (glm::vec3(0.0f, 0.0f, 3.0f));
+
+    ourShader = new Shader("../res/shaders/model_loading.vert", "../res/shaders/model_loading.frag");
+    // load models
+    // -----------
+    ourModel = new Model("../res/object/backpack/backpack.obj");
 
     m_pGameStateMachine = new GameStateMachine();
     m_pGameStateMachine->changeState(new TestState());
 
     m_running = true;
-
-    //m_cube = new Cube();
-    // TODO
-
-    /*
-
-    unsigned int VBO, VAO;
-    glGenVertexArrays(1, &VAO);
-    glGenBuffers(1, &VBO);
-
-    glBindVertexArray(VAO);
-
-    glBindBuffer(GL_ARRAY_BUFFER, VBO);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-
-    // position attribute
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
-    glEnableVertexAttribArray(0);
-    // texture coord attribute
-    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
-    glEnableVertexAttribArray(1);
-     */
 
    return 0;
 }
@@ -119,6 +106,23 @@ void Game::update()
     // ------
     glClearColor(0.05f, 0.05f, 0.05f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+    // TODO use model
+    // don't forget to enable shader before setting uniforms
+    ourShader->use();
+
+    // view/projection transformations
+    glm::mat4 projection = glm::perspective(glm::radians(m_camera->Zoom), (float)m_windowWidth / (float)m_windowHeight, 0.1f, 100.0f);
+    glm::mat4 view = m_camera->GetViewMatrix();
+    ourShader->setMat4("projection", projection);
+    ourShader->setMat4("view", view);
+
+    // render the loaded model
+    glm::mat4 model = glm::mat4(1.0f);
+    model = glm::translate(model, glm::vec3(0.0f, 0.0f, 0.0f)); // translate it down so it's at the center of the scene
+    model = glm::scale(model, glm::vec3(1.0f, 1.0f, 1.0f));	// it's a bit too big for our scene, so scale it down
+    ourShader->setMat4("model", model);
+    ourModel->Draw(*ourShader);
 
     // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
     // -------------------------------------------------------------------------------
