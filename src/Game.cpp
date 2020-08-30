@@ -76,14 +76,23 @@ int Game::init(int window_width, int window_height)
     m_camera = new Camera (glm::vec3(0.0f, 0.0f, 3.0f));
 
     ourShader = new Shader("../res/shaders/model_loading.vert", "../res/shaders/model_loading.frag");
-    // load models
-    // -----------
     ourModel = new Model("../res/object/backpack/backpack.obj");
 
     m_pGameStateMachine = new GameStateMachine();
     m_pGameStateMachine->changeState(new TestState());
 
     m_running = true;
+
+    m_previousFrame = glfwGetTime();
+
+    //glfwSetCursorPosCallback(m_window, &Game::Instance()->mouse_callback); // TODO THIS IS A MESS LOOK AT
+
+    // TODO fix mouse callback stuff
+    // https://stackoverflow.com/questions/7676971/pointing-to-a-function-that-is-a-class-member-glfw-setkeycallback
+
+    m_lastMouseX = m_windowWidth / 2.0f;
+    m_lastMouseY = m_windowHeight / 2.0f;
+
 
    return 0;
 }
@@ -98,10 +107,35 @@ void Game::handleEvents()
     if (glfwGetKey(m_window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
         glfwSetWindowShouldClose(m_window, true);
 
+    // camera
+    if (glfwGetKey(m_window, GLFW_KEY_W) == GLFW_PRESS)
+        m_camera->ProcessKeyboard(FORWARD, m_deltaTime);
+    if (glfwGetKey(m_window, GLFW_KEY_S) == GLFW_PRESS)
+        m_camera->ProcessKeyboard(BACKWARD, m_deltaTime);
+    if (glfwGetKey(m_window, GLFW_KEY_A) == GLFW_PRESS)
+        m_camera->ProcessKeyboard(LEFT, m_deltaTime);
+    if (glfwGetKey(m_window, GLFW_KEY_D) == GLFW_PRESS)
+        m_camera->ProcessKeyboard(RIGHT, m_deltaTime);
+
 }
 
 void Game::update()
 {
+    // TIME
+    float currentFrame = glfwGetTime();
+    m_deltaTime = currentFrame - m_lastFrame;
+    m_lastFrame = currentFrame;
+
+    // calculate fps
+    m_frameCount++;
+    if ( currentFrame - m_previousFrame >= 1.0)
+    {
+        std::cout << "FPS=" << m_frameCount << std::endl;
+        m_frameCount = 0;
+        m_previousFrame = currentFrame;
+    }
+
+
     // render
     // ------
     glClearColor(0.05f, 0.05f, 0.05f, 1.0f);
@@ -139,3 +173,20 @@ void Game::clean()
 }
 
 
+static void mouse_callback(GLFWwindow* window, double xpos, double ypos)
+{
+    if (Game::Instance()->m_firstMouse)
+    {
+        Game::Instance()->m_lastMouseX = xpos;
+        Game::Instance()->m_lastMouseY = ypos;
+        Game::Instance()->m_firstMouse = false;
+    }
+
+    float xoffset = xpos - Game::Instance()->m_lastMouseX;
+    float yoffset = Game::Instance()->m_lastMouseY - ypos; // reversed since y-coordinates go from bottom to top
+
+    Game::Instance()->m_lastMouseX = xpos;
+    Game::Instance()->m_lastMouseY = ypos;
+
+    Game::Instance()->getCamera()->ProcessMouseMovement(xoffset, yoffset);
+}

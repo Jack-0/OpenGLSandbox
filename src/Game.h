@@ -46,10 +46,21 @@ public:
 
     GLFWwindow* getWindow() { return m_window; }
 
+    Camera* getCamera() { return m_camera; }
+
     //int getScreenWidth() { return m_screenWidth; }
     //int getScreenHeight() { return m_screenHeight; }
 
+
+    static void mouse_callback(GLFWwindow* window, double xpos, double ypos); // TODO
+    // mouse
+    float m_lastMouseX = 0.0f;
+    float m_lastMouseY = 0.0f;
+    bool m_firstMouse = true;
+
+
 private:
+
 
     int initGL();
 
@@ -67,9 +78,16 @@ private:
 
     GLFWwindow* m_window;
 
+    float m_deltaTime = 0.0f;
+    float m_previousFrame = 0.0f;
+    int m_frameCount = 0;
+    float m_lastFrame = 0.0f;
+
     Camera* m_camera;
     Shader* ourShader;
     Model* ourModel;
+
+
 };
 
 
