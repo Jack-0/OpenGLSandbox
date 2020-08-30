@@ -1,7 +1,7 @@
 #include "Game.h"
 
 const int WINDOW_WIDTH = 800;
-const int WINDOW_HIEGHT = 800;
+const int WINDOW_HIEGHT = 600;
 
 int main()
 {
