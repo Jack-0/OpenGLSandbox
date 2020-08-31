@@ -85,10 +85,9 @@ int Game::init(int window_width, int window_height)
 
     m_previousFrame = glfwGetTime();
 
-    //glfwSetCursorPosCallback(m_window, &Game::Instance()->mouse_callback); // TODO THIS IS A MESS LOOK AT
+    glfwSetWindowUserPointer(m_window, this);
+    glfwSetCursorPosCallback(m_window, mouse_callback); // TODO clean code
 
-    // TODO fix mouse callback stuff
-    // https://stackoverflow.com/questions/7676971/pointing-to-a-function-that-is-a-class-member-glfw-setkeycallback
 
     m_lastMouseX = m_windowWidth / 2.0f;
     m_lastMouseY = m_windowHeight / 2.0f;
@@ -173,8 +172,9 @@ void Game::clean()
 }
 
 
-static void mouse_callback(GLFWwindow* window, double xpos, double ypos)
+ void Game::mouse_callback(GLFWwindow* window, double xpos, double ypos)
 {
+
     if (Game::Instance()->m_firstMouse)
     {
         Game::Instance()->m_lastMouseX = xpos;
