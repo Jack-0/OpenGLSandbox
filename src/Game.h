@@ -18,6 +18,7 @@
 #include <util/Model.h>
 #include <graphics/Camera.h>
 
+
 class Game
 {
 public:
@@ -52,7 +53,6 @@ public:
     //int getScreenHeight() { return m_screenHeight; }
 
 
-    static void mouse_callback(GLFWwindow* window, double xpos, double ypos); // TODO
     // mouse
     float m_lastMouseX = 0.0f;
     float m_lastMouseY = 0.0f;
@@ -61,6 +61,7 @@ public:
 
 private:
 
+    static void mouse_callback(GLFWwindow* window, double xpos, double ypos); // TODO
 
     int initGL();
 
