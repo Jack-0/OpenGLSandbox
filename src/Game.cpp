@@ -76,7 +76,7 @@ int Game::init(int window_width, int window_height)
     m_camera = new Camera (glm::vec3(0.0f, 0.0f, 3.0f));
 
     ourShader = new Shader("../res/shaders/model_loading.vert", "../res/shaders/model_loading.frag");
-    ourModel = new Model("../res/object/backpack/backpack.obj");
+    ourModel = new Model("../res/object/cube/cube.obj");
 
     m_pGameStateMachine = new GameStateMachine();
     m_pGameStateMachine->changeState(new TestState());
@@ -91,6 +91,9 @@ int Game::init(int window_width, int window_height)
 
     m_lastMouseX = m_windowWidth / 2.0f;
     m_lastMouseY = m_windowHeight / 2.0f;
+
+    // remove cursor and keep mouse focus
+    glfwSetInputMode(m_window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
 
    return 0;
