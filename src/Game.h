@@ -49,8 +49,8 @@ public:
 
     Camera* getCamera() { return m_camera; }
 
-    //int getScreenWidth() { return m_screenWidth; }
-    //int getScreenHeight() { return m_screenHeight; }
+    int getScreenWidth() { return m_windowWidth; }
+    int getScreenHeight() { return m_windowHeight; }
 
 
     // mouse
@@ -85,8 +85,6 @@ private:
     float m_lastFrame = 0.0f;
 
     Camera* m_camera;
-    Shader* ourShader;
-    Model* ourModel;
 
 
 };
