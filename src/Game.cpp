@@ -3,7 +3,6 @@
 //
 
 #include <state/TestState.h>
-#include <std_image.h>
 #define STB_IMAGE_IMPLEMENTATION
 #include <glad/glad.h>
 #include "Game.h"
@@ -68,15 +67,12 @@ int Game::init(int window_width, int window_height)
     if ( initGL() == -1 )
         return -1;
 
-
     // build and compile shaders
     // -------------------------
 
     // TODO test
     m_camera = new Camera (glm::vec3(0.0f, 0.0f, 3.0f));
 
-    ourShader = new Shader("../res/shaders/model_loading.vert", "../res/shaders/model_loading.frag");
-    ourModel = new Model("../res/object/cube/cube.obj");
 
     m_pGameStateMachine = new GameStateMachine();
     m_pGameStateMachine->changeState(new TestState());
@@ -124,7 +120,7 @@ void Game::handleEvents()
 void Game::update()
 {
     // TIME
-    float currentFrame = glfwGetTime();
+    float currentFrame = glfwGetTime(); // todo
     m_deltaTime = currentFrame - m_lastFrame;
     m_lastFrame = currentFrame;
 
@@ -137,37 +133,26 @@ void Game::update()
         m_previousFrame = currentFrame;
     }
 
+    // render game
+    render();
+}
 
+void Game::render()
+{
     // render
     // ------
     glClearColor(0.05f, 0.05f, 0.05f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    // TODO use model
-    // don't forget to enable shader before setting uniforms
-    ourShader->use();
 
-    // view/projection transformations
-    glm::mat4 projection = glm::perspective(glm::radians(m_camera->Zoom), (float)m_windowWidth / (float)m_windowHeight, 0.1f, 100.0f);
-    glm::mat4 view = m_camera->GetViewMatrix();
-    ourShader->setMat4("projection", projection);
-    ourShader->setMat4("view", view);
 
-    // render the loaded model
-    glm::mat4 model = glm::mat4(1.0f);
-    model = glm::translate(model, glm::vec3(0.0f, 0.0f, 0.0f)); // translate it down so it's at the center of the scene
-    model = glm::scale(model, glm::vec3(1.0f, 1.0f, 1.0f));	// it's a bit too big for our scene, so scale it down
-    ourShader->setMat4("model", model);
-    ourModel->Draw(*ourShader);
+    m_pGameStateMachine->render();
 
     // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
     // -------------------------------------------------------------------------------
     glfwSwapBuffers(m_window);
     glfwPollEvents();
 }
-
-void Game::render()
-{}
 
 void Game::clean()
 {
