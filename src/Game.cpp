@@ -119,22 +119,7 @@ void Game::handleEvents()
 
 void Game::update()
 {
-    // TIME
-    float currentFrame = glfwGetTime(); // todo
-    m_deltaTime = currentFrame - m_lastFrame;
-    m_lastFrame = currentFrame;
-
-    // calculate fps
-    m_frameCount++;
-    if ( currentFrame - m_previousFrame >= 1.0)
-    {
-        std::cout << "FPS=" << m_frameCount << std::endl;
-        m_frameCount = 0;
-        m_previousFrame = currentFrame;
-    }
-
-    // render game
-    render();
+    m_pGameStateMachine->update();
 }
 
 void Game::render()
@@ -143,7 +128,6 @@ void Game::render()
     // ------
     glClearColor(0.05f, 0.05f, 0.05f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
 
 
     m_pGameStateMachine->render();
