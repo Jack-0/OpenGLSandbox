@@ -154,6 +154,23 @@ void Game::render()
     glfwPollEvents();
 }
 
+void Game::calculate_fps()
+{
+    // TIME
+    float currentFrame = glfwGetTime(); // todo
+    m_deltaTime = currentFrame - m_lastFrame;
+    m_lastFrame = currentFrame;
+
+    // calculate fps
+    m_frameCount++;
+    if ( currentFrame - m_previousFrame >= 1.0)
+    {
+        std::cout << "FPS=" << m_frameCount << std::endl;
+        m_frameCount = 0;
+        m_previousFrame = currentFrame;
+    }
+}
+
 void Game::clean()
 {
     glfwTerminate();
