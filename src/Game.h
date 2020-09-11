@@ -13,9 +13,6 @@
 
 // todo add vbo vao
 // setup to be a opengl wrapper
-#include <graphics/Shader.h>
-
-#include <util/Model.h>
 #include <graphics/Camera.h>
 
 
@@ -38,6 +35,8 @@ public:
     void render();
     void update();
     void handleEvents();
+
+    void calculate_fps();
 
     void clean();
 
