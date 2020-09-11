@@ -1,4 +1,8 @@
+#define STB_IMAGE_IMPLEMENTATION
+#include <std_image.h>
+
 #include "Game.h"
+
 
 const int WINDOW_WIDTH = 800;
 const int WINDOW_HIEGHT = 600;
@@ -13,6 +17,7 @@ int main()
         Game::Instance()->handleEvents();
         Game::Instance()->update();
         Game::Instance()->render();
+        Game::Instance()->calculate_fps();
     }
 
     Game::Instance()->clean();
