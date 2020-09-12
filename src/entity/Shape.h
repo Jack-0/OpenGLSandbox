@@ -25,8 +25,6 @@ private:
     unsigned int m_texture;
 
     Shader* m_shader;
-
-
 };
 
 
