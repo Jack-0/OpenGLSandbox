@@ -11,6 +11,8 @@
 #include <util/Model.h>
 
 #include <entity/Cube.h>
+#include <entity/Shape.h>
+
 #include "GameState.h"
 
 class TestState : public GameState
@@ -28,6 +30,9 @@ public:
 private:
     static const std::string s_StateID;
     Cube* m_cube;
+    Cube* m_cube2;
+    Shape* m_shape;
+    float test = 2.0f;
 };
 
 
