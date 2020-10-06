@@ -1,7 +1,7 @@
 # OpenGL Sandbox
 Writing code to learn OpenGL via https://learnopengl.com/.
 
-## Note
+## Description
 The code is compiled using cmake.
 Code compiles and runs on both Linux and Windows.
 
@@ -15,4 +15,13 @@ Code compiles and runs on both Linux and Windows.
 6. `$ ./OpenGLSandbox` <br> 
 
 ## Dependencies
-TODO
+- GLFW
+- ASSIMP
+- GLAD
+- GLM
+
+## Problems and solutions
+
+#### Clion (project file is not linking correctly)
+1. When building using CLion it maybe necessary to delete cmake-build-debug 
+2. Then right click within the project explorer and click reload cmake project
