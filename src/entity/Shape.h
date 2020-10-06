@@ -21,9 +21,7 @@ private:
     float* vertices;
     unsigned int m_vbo;
     unsigned int  m_vao;
-
     unsigned int m_texture;
-
     Shader* m_shader;
 };
 
