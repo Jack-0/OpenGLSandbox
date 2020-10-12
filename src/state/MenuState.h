@@ -11,6 +11,7 @@
 #include <util/Model.h>
 
 #include <entity/Cube.h>
+#include <entity/Text.h>
 //#include <entity/Shape.h>
 
 #include "GameState.h"
@@ -30,6 +31,7 @@ public:
 private:
     static const std::string s_StateID;
     Cube* m_cube;
+    Text* m_text;
 };
 
 
