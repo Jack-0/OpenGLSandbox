@@ -22,17 +22,24 @@ struct Character {
 class Text : GameObject
 {
 public:
-    Text();
+    static const int PIXEL_HEIGHT = 48;
+
+    Text(std::string text, float x, float y, float scale, glm::vec3 color);
     void update();
     void render();
     void clean();
+
+    void setText(std::string text) { m_text = text; }
+    void move(float x, float y);
 
 private:
     std::map<char, Character> Characters;
 
     float m_x = 0.0f;
     float m_y = 0.0f;
-    //float m_z = 0.0f;
+    float m_scale = 1.0f;
+    glm::vec3 m_color = {0,0,0};
+    string m_text = "";
 
     Shader* m_shader;
     glm::mat4 m_projection;
