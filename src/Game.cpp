@@ -10,8 +10,6 @@
 #include "Game.h"
 
 
-
-
 Game* Game::s_pInstance = 0; // singleton
 
 int Game::initGL()
@@ -97,8 +95,7 @@ int Game::init(int window_width, int window_height)
     // remove cursor and keep mouse focus
     glfwSetInputMode(m_window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
-
-   return 0;
+    return 0;
 }
 
 void Game::handleEvents()
@@ -155,7 +152,7 @@ void Game::calculate_fps()
     m_frameCount++;
     if ( currentFrame - m_previousFrame >= 1.0)
     {
-        std::cout << "FPS=" << m_frameCount << std::endl;
+        m_fps = m_frameCount;
         m_frameCount = 0;
         m_previousFrame = currentFrame;
     }
