@@ -50,7 +50,7 @@ public:
 
     int getScreenWidth() { return m_windowWidth; }
     int getScreenHeight() { return m_windowHeight; }
-
+    int getFPS() {return m_fps; }
 
     // mouse
     float m_lastMouseX = 0.0f;
@@ -82,10 +82,9 @@ private:
     float m_previousFrame = 0.0f;
     int m_frameCount = 0;
     float m_lastFrame = 0.0f;
+    int m_fps = 0; // store frames per second
 
     Camera* m_camera;
-
-
 };
 
 
