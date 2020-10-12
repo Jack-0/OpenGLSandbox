@@ -5,8 +5,13 @@
 #include <Game.h>
 #include "Text.h"
 
-Text::Text() : GameObject()
+Text::Text(std::string text, float x, float y, float scale, glm::vec3 color) : GameObject()
 {
+    m_text = text;
+    m_x = x;
+    m_y = y;
+    m_scale = scale;
+    m_color = color;
     // set OpenGL state for font rendering
     glEnable(GL_CULL_FACE);
     glEnable(GL_BLEND);
@@ -29,7 +34,7 @@ Text::Text() : GameObject()
         std::cout << "ERROR::FREETYPE: Failed to load font" << std::endl;
 
     // set size to load glyphs as
-    FT_Set_Pixel_Sizes(face, 0, 48);
+    FT_Set_Pixel_Sizes(face, 0, PIXEL_HEIGHT);
 
     // disable byte-alignment restriction
     glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
@@ -104,35 +109,34 @@ void Text::render()
 {
     // activate corresponding render state
     m_shader->use();
-    glUniform3f(glGetUniformLocation(m_shader->program_id, "textColor"), 255, 0, 0); // last 3  = colour
+    glUniform3f(glGetUniformLocation(m_shader->program_id, "textColor"), m_color.x, m_color.y, m_color.z); // last 3  = colour
     glActiveTexture(GL_TEXTURE0);
     glBindVertexArray(m_VAO);
 
     // iterate through all characters
-    int x = 100;
-    int y = 100;
     float scale = 1.0f;
 
-    std::string text = "Hello World";
+    int temp_x = m_x;
+
     std::string::const_iterator c;
-    for (c = text.begin(); c != text.end(); c++)
+    for (c = m_text.begin(); c != m_text.end(); c++)
     {
         Character ch = Characters[*c];
 
-        float xpos = x + ch.Bearing.x * scale;
-        float ypos = y - (ch.Size.y - ch.Bearing.y) * scale;
+        float x = temp_x + ch.Bearing.x * scale;
+        float y = m_y - (ch.Size.y - ch.Bearing.y) * scale;
 
         float w = ch.Size.x * scale;
         float h = ch.Size.y * scale;
         // update VBO for each character
         float vertices[6][4] = {
-                { xpos,     ypos + h,   0.0f, 0.0f },
-                { xpos,     ypos,       0.0f, 1.0f },
-                { xpos + w, ypos,       1.0f, 1.0f },
+                {  x,     y + h,   0.0f, 0.0f },
+                {  x,     y,       0.0f, 1.0f },
+                {  x + w, y,       1.0f, 1.0f },
 
-                { xpos,     ypos + h,   0.0f, 0.0f },
-                { xpos + w, ypos,       1.0f, 1.0f },
-                { xpos + w, ypos + h,   1.0f, 0.0f }
+                {  x,     y + h,   0.0f, 0.0f },
+                {  x + w, y,       1.0f, 1.0f },
+                {  x + w, y + h,   1.0f, 0.0f }
         };
         // render glyph texture over quad
         glBindTexture(GL_TEXTURE_2D, ch.TextureID);
@@ -144,7 +148,7 @@ void Text::render()
         // render quad
         glDrawArrays(GL_TRIANGLES, 0, 6);
         // now advance cursors for next glyph (note that advance is number of 1/64 pixels)
-        x += (ch.Advance >> 6) * scale; // bitshift by 6 to get value in pixels (2^6 = 64 (divide amount of 1/64th pixels by 64 to get amount of pixels))
+        temp_x += (ch.Advance >> 6) * scale; // bitshift by 6 to get value in pixels (2^6 = 64 (divide amount of 1/64th pixels by 64 to get amount of pixels))
     }
     glBindVertexArray(0);
     glBindTexture(GL_TEXTURE_2D, 0);
@@ -153,4 +157,10 @@ void Text::render()
 void Text::clean()
 {
 
+}
+
+void Text::move(float x, float y)
+{
+    m_x = x;
+    m_y = y;
 }
