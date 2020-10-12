@@ -13,6 +13,10 @@ include_directories(${CMAKE_SOURCE_DIR}/include/glfw-3.3.2/include)
 add_subdirectory(${CMAKE_SOURCE_DIR}/include/assimp-4.0.1)
 include_directories(${CMAKE_SOURCE_DIR}/include/assimp-4.0.1/include)
 
+# add freetype
+add_subdirectory(${CMAKE_SOURCE_DIR}/include/freetype-2.10.0)
+include_directories(${CMAKE_SOURCE_DIR}/include/freetype-2.10.0/include)
+
 # glad
 add_library("glad" "${CMAKE_SOURCE_DIR}/include/glad/src/glad.c")
 
@@ -36,7 +40,7 @@ include_directories(
 )
 
 # set libraries
-set(LIBS glfw glad assimp ${CMAKE_DL_LIBS})
+set(LIBS glfw glad assimp freetype ${CMAKE_DL_LIBS})
 
 # link libraries
 target_link_libraries(${PROJECT_NAME} ${LIBS} glfw ${GLFW_LIBRARIES})
