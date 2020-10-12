@@ -32,6 +32,7 @@ private:
     static const std::string s_StateID;
     Cube* m_cube;
     Text* m_text;
+    Text* m_FPStext;
 };
 
 
