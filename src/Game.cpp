@@ -10,30 +10,12 @@
 #include "Game.h"
 
 
-#include <ft2build.h>
-#include FT_FREETYPE_H
 
 
 Game* Game::s_pInstance = 0; // singleton
 
 int Game::initGL()
 {
-
-    // TODO font test
-    FT_Library ft;
-    if (FT_Init_FreeType(&ft))
-    {
-        std::cout << "ERROR::FREETYPE: Could not init FreeType Library" << std::endl;
-        return -1;
-    }
-
-    FT_Face face;
-    if (FT_New_Face(ft, "../res/fonts/Roboto/Roboto-Black.ttf", 0, &face))
-    {
-        std::cout << "ERROR::FREETYPE: Failed to load font" << std::endl;
-        return -1;
-    }
-
     // glfw: initialize and configure
     // ------------------------------
     glfwInit();
