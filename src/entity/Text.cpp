@@ -113,9 +113,7 @@ void Text::render()
     glActiveTexture(GL_TEXTURE0);
     glBindVertexArray(m_VAO);
 
-    // iterate through all characters
-    float scale = 1.0f;
-
+        // iterate through all characters TODO refactor to be more efficient
     int temp_x = m_x;
 
     std::string::const_iterator c;
@@ -123,11 +121,11 @@ void Text::render()
     {
         Character ch = Characters[*c];
 
-        float x = temp_x + ch.Bearing.x * scale;
-        float y = m_y - (ch.Size.y - ch.Bearing.y) * scale;
+        float x = temp_x + ch.Bearing.x * m_scale;
+        float y = m_y - (ch.Size.y - ch.Bearing.y) * m_scale;
 
-        float w = ch.Size.x * scale;
-        float h = ch.Size.y * scale;
+        float w = ch.Size.x * m_scale;
+        float h = ch.Size.y * m_scale;
         // update VBO for each character
         float vertices[6][4] = {
                 {  x,     y + h,   0.0f, 0.0f },
@@ -148,7 +146,7 @@ void Text::render()
         // render quad
         glDrawArrays(GL_TRIANGLES, 0, 6);
         // now advance cursors for next glyph (note that advance is number of 1/64 pixels)
-        temp_x += (ch.Advance >> 6) * scale; // bitshift by 6 to get value in pixels (2^6 = 64 (divide amount of 1/64th pixels by 64 to get amount of pixels))
+        temp_x += (ch.Advance >> 6) * m_scale; // bitshift by 6 to get value in pixels (2^6 = 64 (divide amount of 1/64th pixels by 64 to get amount of pixels))
     }
     glBindVertexArray(0);
     glBindTexture(GL_TEXTURE_2D, 0);
