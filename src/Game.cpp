@@ -106,13 +106,14 @@ int Game::init(int window_width, int window_height)
 
     glfwSetWindowUserPointer(m_window, this);
     glfwSetCursorPosCallback(m_window, mouse_callback); // TODO clean code
+    glfwSetWindowSizeCallback(m_window, window_size_callback);
 
 
     m_lastMouseX = m_windowWidth / 2.0f;
     m_lastMouseY = m_windowHeight / 2.0f;
 
     // remove cursor and keep mouse focus
-    glfwSetInputMode(m_window, GLFW_CURSOR, GLFW_CURSOR_DISABLED); // TODO escape should return cursor
+    ///glfwSetInputMode(m_window, GLFW_CURSOR, GLFW_CURSOR_DISABLED); // TODO escape should return cursor
 
     return 0;
 }
@@ -148,7 +149,7 @@ void Game::render()
 {
     // render
     // ------
-    glClearColor(0.05f, 0.05f, 0.05f, 1.0f);
+    glClearColor(m_bgColor.x, m_bgColor.y, m_bgColor.z, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 
@@ -200,4 +201,11 @@ void Game::clean()
     Game::Instance()->m_lastMouseY = ypos;
 
     Game::Instance()->getCamera()->ProcessMouseMovement(xoffset, yoffset);
+}
+
+void Game::window_size_callback(GLFWwindow *window, int width, int height)
+{
+    std::cout << "Window resized new width : height = " << width << " : " << height << "\n";
+    Game::Instance()->m_windowWidth = width;
+    Game::Instance()->m_windowHeight = height;
 }
