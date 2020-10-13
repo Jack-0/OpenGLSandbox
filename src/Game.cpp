@@ -26,9 +26,8 @@ int Game::initGL()
 #endif
 
     // glfw window creation
-    // --------------------
     //GLFWwindow* m_window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "LearnOpenGL", NULL, NULL);
-    m_window = glfwCreateWindow(m_windowWidth, m_windowHeight, "LearnOpenGL", NULL, NULL);
+    m_window = glfwCreateWindow(m_windowWidth, m_windowHeight, "OpenGL Sandbox", NULL, NULL);
     if (m_window == NULL)
     {
         std::cout << "Failed to create GLFW window" << std::endl;
@@ -36,6 +35,28 @@ int Game::initGL()
         return -1;
     }
     glfwMakeContextCurrent(m_window);
+
+    // get primary monitor for window centering
+    GLFWmonitor* monitor = glfwGetPrimaryMonitor();
+    // window
+    if (!monitor)
+        return -1;
+
+    const GLFWvidmode *mode = glfwGetVideoMode(monitor);
+    if (!mode)
+        return -1;
+
+    int monitorX, monitorY;
+    glfwGetMonitorPos(monitor, &monitorX, &monitorY);
+
+    int windowWidth, windowHeight;
+    glfwGetWindowSize(m_window, &windowWidth, &windowHeight);
+    // center window on screen/monitor
+    glfwSetWindowPos(m_window,
+                     monitorX + (mode->width - windowWidth) / 2,
+                     monitorY + (mode->height - windowHeight) / 2);
+
+
     ///glfwSetFramebufferSizeCallback(m_window, framebuffer_size_callback);
     ///glfwSetCursorPosCallback(m_window, mouse_callback);
     ///glfwSetScrollCallback(m_window, scroll_callback);
@@ -45,7 +66,6 @@ int Game::initGL()
     glfwSetInputMode(m_window, GLFW_CURSOR, GLFW_CURSOR_NORMAL); // TODO: FOR DEBUG to keep mouse upon error
 
     // glad: load all OpenGL function pointers
-    // ---------------------------------------
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
     {
         std::cout << "Failed to initialize GLAD" << std::endl;
@@ -56,7 +76,6 @@ int Game::initGL()
     //stbi_set_flip_vertically_on_load(true);
 
     // configure global opengl state
-    // -----------------------------
     glEnable(GL_DEPTH_TEST);
 
     return 0;
@@ -93,7 +112,7 @@ int Game::init(int window_width, int window_height)
     m_lastMouseY = m_windowHeight / 2.0f;
 
     // remove cursor and keep mouse focus
-    glfwSetInputMode(m_window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+    glfwSetInputMode(m_window, GLFW_CURSOR, GLFW_CURSOR_DISABLED); // TODO escape should return cursor
 
     return 0;
 }
