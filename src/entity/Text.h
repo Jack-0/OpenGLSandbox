@@ -29,8 +29,10 @@ public:
     void render();
     void clean();
 
-    void setText(std::string text) { m_text = text; }
+    void setText(std::string text);
     void move(float x, float y);
+
+    void adjustForLength();
 
 private:
     std::map<char, Character> Characters;
@@ -40,6 +42,7 @@ private:
     float m_scale = 1.0f;
     glm::vec3 m_color = {0,0,0};
     string m_text = "";
+    int string_length = 0;
 
     Shader* m_shader;
     glm::mat4 m_projection;

@@ -148,6 +148,8 @@ void Text::render()
         // now advance cursors for next glyph (note that advance is number of 1/64 pixels)
         temp_x += (ch.Advance >> 6) * m_scale; // bitshift by 6 to get value in pixels (2^6 = 64 (divide amount of 1/64th pixels by 64 to get amount of pixels))
     }
+    string_length = temp_x;
+
     glBindVertexArray(0);
     glBindTexture(GL_TEXTURE_2D, 0);
 }
@@ -161,4 +163,15 @@ void Text::move(float x, float y)
 {
     m_x = x;
     m_y = y;
+}
+
+void Text::setText(std::string text)
+{
+    m_text = text;
+}
+
+void Text::adjustForLength()
+{
+    render(); // needed to set string_length
+    m_x = m_x - (string_length / 2);
 }
