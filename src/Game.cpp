@@ -56,6 +56,8 @@ int Game::initGL()
                      monitorX + (mode->width - windowWidth) / 2,
                      monitorY + (mode->height - windowHeight) / 2);
 
+    // set window minimum size
+    glfwSetWindowSizeLimits(m_window, windowWidth, windowHeight, 1920, 1080);
 
     ///glfwSetFramebufferSizeCallback(m_window, framebuffer_size_callback);
     ///glfwSetCursorPosCallback(m_window, mouse_callback);
@@ -97,13 +99,14 @@ int Game::init(int window_width, int window_height)
 
 
     m_pGameStateMachine = new GameStateMachine();
-    //m_pGameStateMachine->changeState(new TestState());
+    //m_pGameStateMachine->changeState(new TestState()); // TODO test state can be removed
     m_pGameStateMachine->changeState(new MenuState());
 
     m_running = true;
 
     m_previousFrame = glfwGetTime();
 
+    // callbacks
     glfwSetWindowUserPointer(m_window, this);
     glfwSetCursorPosCallback(m_window, mouse_callback); // TODO clean code
     glfwSetWindowSizeCallback(m_window, window_size_callback);
@@ -113,7 +116,7 @@ int Game::init(int window_width, int window_height)
     m_lastMouseY = m_windowHeight / 2.0f;
 
     // remove cursor and keep mouse focus
-    ///glfwSetInputMode(m_window, GLFW_CURSOR, GLFW_CURSOR_DISABLED); // TODO escape should return cursor
+    ///glfwSetInputMode(m_window, GLFW_CURSOR, GLFW_CURSOR_DISABLED); // TODO current state should decide this i.e menu would set input enabled game disabled
 
     return 0;
 }
