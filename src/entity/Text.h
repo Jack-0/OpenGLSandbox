@@ -42,7 +42,7 @@ private:
     float m_scale = 1.0f;
     glm::vec3 m_color = {0,0,0};
     string m_text = "";
-    int string_length = 0;
+    int m_pixel_string_len = 0;
 
     Shader* m_shader;
     glm::mat4 m_projection;
