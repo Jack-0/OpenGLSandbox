@@ -102,6 +102,29 @@ Text::Text(std::string text, float x, float y, float scale, glm::vec3 color) : G
 
 void Text::update()
 {
+    // get mouse position
+    float mouse_x = Game::Instance()->m_lastMouseX;
+    float mouse_y = Game::Instance()->m_lastMouseY;
+
+
+    //float yoffset = Game::Instance()->m_lastMouseY - ypos; // reversed since y-coordinates go from bottom to top
+    //float m_y_reversed =
+
+
+    std::cout << m_text<< "... mousex = " << mouse_x << "| mx = " << m_x << "\tmousey = " << mouse_y << "| my = " << m_y << " ||| my+pixel === "<< m_y + PIXEL_HEIGHT << "\n";
+    // checkout mouse over //TODO current issue with mouse_Y being inverted - issue is due to mouse pos in GAME.cpp diffrent to world y pos when entity is placed
+    if (mouse_x > m_x && ( mouse_x < ( m_x + m_pixel_string_len )) ) {
+        //std::cout << "if X == (  " << mouse_x << " > " << m_x << " && " << mouse_x << " < " << m_x << " + " << m_pixel_string_len <<"  )\n";
+        if (mouse_y > m_y && ( mouse_y < ( m_y + PIXEL_HEIGHT )) ) {
+            std::cout << "if Y == (  " << mouse_y << " < " << m_y << " && " << mouse_y << " > " << m_y -  PIXEL_HEIGHT <<"  )\n";
+            // mouse is over the text
+            //std::cout << "Mouse is over the text: " << m_text << "\n\n---------\n\n";
+            m_color = {255, 0 , 0};
+        } else {
+            m_color = {255, 255 , 255};
+        }
+    }
+
 
 }
 
@@ -113,7 +136,7 @@ void Text::render()
     glActiveTexture(GL_TEXTURE0);
     glBindVertexArray(m_VAO);
 
-        // iterate through all characters TODO refactor to be more efficient
+    // iterate through all characters TODO refactor to be more efficient
     int temp_x = m_x;
 
     std::string::const_iterator c;
@@ -148,7 +171,9 @@ void Text::render()
         // now advance cursors for next glyph (note that advance is number of 1/64 pixels)
         temp_x += (ch.Advance >> 6) * m_scale; // bitshift by 6 to get value in pixels (2^6 = 64 (divide amount of 1/64th pixels by 64 to get amount of pixels))
     }
-    string_length = temp_x;
+    m_pixel_string_len = temp_x;
+
+    //std::cout << "string = " << m_text << " length = " << m_pixel_string_len << "\n"; // todo
 
     glBindVertexArray(0);
     glBindTexture(GL_TEXTURE_2D, 0);
@@ -173,5 +198,5 @@ void Text::setText(std::string text)
 void Text::adjustForLength()
 {
     render(); // needed to set string_length
-    m_x = m_x - (string_length / 2);
+    m_x = m_x - (m_pixel_string_len / 2);
 }
