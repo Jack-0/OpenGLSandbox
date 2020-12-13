@@ -102,29 +102,23 @@ Text::Text(std::string text, float x, float y, float scale, glm::vec3 color) : G
 
 void Text::update()
 {
+    // Highlight text if mouse over ----------------------------
     // get mouse position
     float mouse_x = Game::Instance()->m_lastMouseX;
-    float mouse_y = Game::Instance()->m_lastMouseY;
-
-
-    //float yoffset = Game::Instance()->m_lastMouseY - ypos; // reversed since y-coordinates go from bottom to top
-    //float m_y_reversed =
-
-
-    std::cout << m_text<< "... mousex = " << mouse_x << "| mx = " << m_x << "\tmousey = " << mouse_y << "| my = " << m_y << " ||| my+pixel === "<< m_y + PIXEL_HEIGHT << "\n";
-    // checkout mouse over //TODO current issue with mouse_Y being inverted - issue is due to mouse pos in GAME.cpp diffrent to world y pos when entity is placed
-    if (mouse_x > m_x && ( mouse_x < ( m_x + m_pixel_string_len )) ) {
-        //std::cout << "if X == (  " << mouse_x << " > " << m_x << " && " << mouse_x << " < " << m_x << " + " << m_pixel_string_len <<"  )\n";
-        if (mouse_y > m_y && ( mouse_y < ( m_y + PIXEL_HEIGHT )) ) {
-            std::cout << "if Y == (  " << mouse_y << " < " << m_y << " && " << mouse_y << " > " << m_y -  PIXEL_HEIGHT <<"  )\n";
-            // mouse is over the text
-            //std::cout << "Mouse is over the text: " << m_text << "\n\n---------\n\n";
-            m_color = {255, 0 , 0};
-        } else {
-            m_color = {255, 255 , 255};
+    float mouse_y = Game::Instance()->getScreenHeight() - Game::Instance()->m_lastMouseY; // Y position must be subtracted from screen height to work with entities coord system TODO
+    // set default colour
+    m_color = {255,255,255}; // set colour to white
+    // check if the mouse is within the text bounds
+    if (mouse_x > m_x) {
+        if (mouse_x < (m_x + m_pixel_string_len)) {
+            if (mouse_y < m_y + PIXEL_HEIGHT) {
+                if (mouse_y >  m_y) {
+                    // mouse is over the text
+                    m_color = {0, 240, 0}; // set text colour to green
+                }
+            }
         }
     }
-
 
 }
 
