@@ -61,6 +61,7 @@ public:
 private:
 
     static void mouse_callback(GLFWwindow* window, double xpos, double ypos); // TODO
+    static void window_size_callback(GLFWwindow* window, int width, int height);
 
     int initGL();
 
@@ -85,6 +86,8 @@ private:
     int m_fps = 0; // store frames per second
 
     Camera* m_camera;
+
+    glm::vec3 m_bgColor = {0,0,0};
 };
 
 

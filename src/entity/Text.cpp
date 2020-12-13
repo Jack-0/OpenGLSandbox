@@ -102,6 +102,23 @@ Text::Text(std::string text, float x, float y, float scale, glm::vec3 color) : G
 
 void Text::update()
 {
+    // Highlight text if mouse over ----------------------------
+    // get mouse position
+    float mouse_x = Game::Instance()->m_lastMouseX;
+    float mouse_y = Game::Instance()->getScreenHeight() - Game::Instance()->m_lastMouseY; // Y position must be subtracted from screen height to work with entities coord system TODO
+    // set default colour
+    m_color = {255,255,255}; // set colour to white
+    // check if the mouse is within the text bounds
+    if (mouse_x > m_x) {
+        if (mouse_x < (m_x + m_pixel_string_len)) {
+            if (mouse_y < m_y + PIXEL_HEIGHT) {
+                if (mouse_y >  m_y) {
+                    // mouse is over the text
+                    m_color = {0, 240, 0}; // set text colour to green
+                }
+            }
+        }
+    }
 
 }
 
@@ -113,9 +130,7 @@ void Text::render()
     glActiveTexture(GL_TEXTURE0);
     glBindVertexArray(m_VAO);
 
-    // iterate through all characters
-    float scale = 1.0f;
-
+    // iterate through all characters TODO refactor to be more efficient
     int temp_x = m_x;
 
     std::string::const_iterator c;
@@ -123,11 +138,11 @@ void Text::render()
     {
         Character ch = Characters[*c];
 
-        float x = temp_x + ch.Bearing.x * scale;
-        float y = m_y - (ch.Size.y - ch.Bearing.y) * scale;
+        float x = temp_x + ch.Bearing.x * m_scale;
+        float y = m_y - (ch.Size.y - ch.Bearing.y) * m_scale;
 
-        float w = ch.Size.x * scale;
-        float h = ch.Size.y * scale;
+        float w = ch.Size.x * m_scale;
+        float h = ch.Size.y * m_scale;
         // update VBO for each character
         float vertices[6][4] = {
                 {  x,     y + h,   0.0f, 0.0f },
@@ -148,8 +163,12 @@ void Text::render()
         // render quad
         glDrawArrays(GL_TRIANGLES, 0, 6);
         // now advance cursors for next glyph (note that advance is number of 1/64 pixels)
-        temp_x += (ch.Advance >> 6) * scale; // bitshift by 6 to get value in pixels (2^6 = 64 (divide amount of 1/64th pixels by 64 to get amount of pixels))
+        temp_x += (ch.Advance >> 6) * m_scale; // bitshift by 6 to get value in pixels (2^6 = 64 (divide amount of 1/64th pixels by 64 to get amount of pixels))
     }
+    m_pixel_string_len = temp_x;
+
+    //std::cout << "string = " << m_text << " length = " << m_pixel_string_len << "\n"; // todo
+
     glBindVertexArray(0);
     glBindTexture(GL_TEXTURE_2D, 0);
 }
@@ -163,4 +182,15 @@ void Text::move(float x, float y)
 {
     m_x = x;
     m_y = y;
+}
+
+void Text::setText(std::string text)
+{
+    m_text = text;
+}
+
+void Text::adjustForLength()
+{
+    render(); // needed to set string_length
+    m_x = m_x - (m_pixel_string_len / 2);
 }
