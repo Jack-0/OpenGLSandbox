@@ -14,25 +14,27 @@ const std::string MenuState::s_StateID = "MENU";
 
 void MenuState::update()
 {
-    m_cube->update();
-    m_text->update();
-    m_FPStext->setText("FPS: " + to_string(Game::Instance()->getFPS()));
-    m_FPStext->update();
+    m_titleText->update();
+    m_demoText->update();
+    m_exitText->update();
 }
 
 void MenuState::render()
 {
-    m_cube->render();
-    m_text->render(); // Render text last to ensure it is on the top most layer - i.e not overlapped
-    m_FPStext->render();
+    m_titleText->render();
+    m_demoText->render();
+    m_exitText->render();
 }
 
 bool MenuState::onEnter()
 {
     std::cout  << "State \"" <<s_StateID << "\" loaded!" << std::endl;
-    m_cube = new Cube("../res/object/cube/cube.obj","../res/shaders/model_loading.vert","../res/shaders/model_loading.frag");
-    m_text = new Text("Hello World", 100, 100, 1.0f, glm::vec3(255,255,255));
-    m_FPStext = new Text("", 0, Game::Instance()->getScreenHeight()- Text::PIXEL_HEIGHT , 1.0f, glm::vec3(255,255,255));
+    float scale = 1.0f;
+    m_titleText = new Text("OpenGL Sandbox", Game::Instance()->getScreenWidth() * 0.1, Game::Instance()->getScreenHeight() - (Text::PIXEL_HEIGHT * scale * 2), scale, glm::vec3(255,255,255));
+    scale = 0.8f;
+    m_demoText = new Text("> Demo",  Game::Instance()->getScreenWidth() * 0.2, Game::Instance()->getScreenHeight() / 2 + Text::PIXEL_HEIGHT * scale , scale, glm::vec3(255,255,255));
+    m_exitText = new Text("> Exit", Game::Instance()->getScreenWidth() * 0.2, Game::Instance()->getScreenHeight() / 2 - Text::PIXEL_HEIGHT * scale , scale, glm::vec3(255,255,255));
+
 }
 
 bool MenuState::onExit()
