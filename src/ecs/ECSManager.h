@@ -18,15 +18,6 @@ class ECSManager
 {
 public:
     
-    static ECSManager* Instance()
-    {
-        if(s_pInstance == 0)
-        {
-            s_pInstance = new ECSManager();
-            return s_pInstance;
-        }
-    }
-    
     /// initialises the needed Managers for the ECS model
     void init()
     {
@@ -108,13 +99,11 @@ public:
     
 
 private:
-    static ECSManager* s_pInstance;
     
     std::unique_ptr<ComponentManager> m_componentManager;
     std::unique_ptr<EntityManager> m_entityManager;
     std::unique_ptr<SystemManager> m_systemManager;
 };
 
-ECSManager* ECSManager::s_pInstance = 0;
 
 #endif //ECS_ECSMANAGER_H
