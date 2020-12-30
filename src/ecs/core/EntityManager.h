@@ -16,8 +16,8 @@ using Entity = std::uint32_t;
 using ComponentType = std::uint8_t;
 
 // constants
-const ComponentType MAX_COMPONENTS  = 3;
-const Entity MAX_ENTITIES    = 11;
+const ComponentType MAX_COMPONENTS = 50;    // TODO should these values be consts
+const Entity MAX_ENTITIES = 5000;           // TODO should these values be consts
 
 // signature type alias. Each bit represents if an Entity has a component.
 // For example:
