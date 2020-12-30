@@ -10,21 +10,28 @@
 #include <glad/glad.h>
 #include <glm/glm.hpp>
 #include <GLFW/glfw3.h>
+#include <ecs/ECSManager.h>
+#include <ecs/systems/MeshRenderSystem.h>
 
 const std::string TestState::s_StateID = "TEST";
 
-void TestState::update() {
+void TestState::update()
+{
+    /*
     m_cube->update();
     m_cube2->move(test,0,0);
     test += 0.0001f;
     m_cube2->update();
     m_shape->update();
+    */
 }
 
 void TestState::render() {
+    /*
     //m_cube->render();
     m_shape->render();
     m_cube2->render();
+     */
 
     //glEnable(GL_DEPTH_TEST);
     //glBindVertexArray(vao);
@@ -36,6 +43,9 @@ void TestState::render() {
 
 bool TestState::onEnter(){
     std::cout  << "State \"" <<s_StateID << "\" loaded!" << std::endl;
+    
+    Game::Instance()->get_ecs()->register_system<MeshRenderSystem>();
+    /*
     m_cube = new Cube("../res/object/cube/cube.obj","../res/shaders/model_loading.vert","../res/shaders/model_loading.frag");
     m_cube2 = new Cube("../res/object/cube/cube.obj","../res/shaders/model_loading.vert","../res/shaders/model_loading.frag");
     m_shape = new Shape();
@@ -82,7 +92,10 @@ bool TestState::onEnter(){
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 
     length = indices.size()*4;
+     */
 
 }
 
-bool TestState::onExit() {}
+bool TestState::onExit()
+{
+}
