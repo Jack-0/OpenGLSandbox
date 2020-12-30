@@ -7,6 +7,7 @@
 
 #define STB_IMAGE_IMPLEMENTATION
 #include <glad/glad.h>
+#include <ecs/systems/MeshRenderSystem.h>
 #include "Game.h"
 
 
@@ -64,8 +65,8 @@ int Game::initGL()
     ///glfwSetScrollCallback(m_window, scroll_callback);
 
     // tell GLFW to capture our mouse
-    //glfwSetInputMode(m_window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-    glfwSetInputMode(m_window, GLFW_CURSOR, GLFW_CURSOR_NORMAL); // TODO: FOR DEBUG to keep mouse upon error
+    glfwSetInputMode(m_window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+    //glfwSetInputMode(m_window, GLFW_CURSOR, GLFW_CURSOR_NORMAL); // TODO: FOR DEBUG to keep mouse upon error
 
     // glad: load all OpenGL function pointers
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
@@ -80,6 +81,10 @@ int Game::initGL()
     // configure global opengl state
     glEnable(GL_DEPTH_TEST);
 
+    // TODO
+    m_ecs = new ECSManager();
+    m_ecs->init();
+    
     return 0;
 }
 
@@ -99,8 +104,8 @@ int Game::init(int window_width, int window_height)
 
 
     m_pGameStateMachine = new GameStateMachine();
-    //m_pGameStateMachine->changeState(new TestState()); // TODO test state can be removed
-    m_pGameStateMachine->changeState(new MenuState());
+    m_pGameStateMachine->changeState(new TestState()); // TODO test state can be removed
+    //m_pGameStateMachine->changeState(new MenuState());
 
     m_running = true;
 
@@ -118,6 +123,7 @@ int Game::init(int window_width, int window_height)
     // remove cursor and keep mouse focus
     ///glfwSetInputMode(m_window, GLFW_CURSOR, GLFW_CURSOR_DISABLED); // TODO current state should decide this i.e menu would set input enabled game disabled
 
+    //ECSManager::Instance()->init();
     return 0;
 }
 
