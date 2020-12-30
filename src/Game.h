@@ -14,6 +14,7 @@
 // todo add vbo vao
 // setup to be a opengl wrapper
 #include <graphics/Camera.h>
+#include <ecs/ECSManager.h>
 
 
 class Game
@@ -57,9 +58,12 @@ public:
     float m_lastMouseY = 0.0f;
     bool m_firstMouse = true;
 
+    ECSManager* get_ecs() { return m_ecs; }
 
 private:
 
+    ECSManager* m_ecs;
+    
     static void mouse_callback(GLFWwindow* window, double xpos, double ypos); // TODO
     static void window_size_callback(GLFWwindow* window, int width, int height);
 
