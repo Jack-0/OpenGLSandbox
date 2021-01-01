@@ -6,10 +6,11 @@
 #define OPENGLSANDBOX_SHADERCOMPONENT_H
 
 
-class ShaderComponent
+struct ShaderComponent
 {
     const char *vert_path;
     const char *frag_path;
+    Shader* shader;
 };
 
 
