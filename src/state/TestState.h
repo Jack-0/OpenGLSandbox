@@ -15,6 +15,9 @@
 
 #include "GameState.h"
 
+#include <memory>
+#include <ecs/systems/MeshRenderSystem.h>
+
 class TestState : public GameState
 {
 public:
@@ -29,16 +32,8 @@ public:
 
 private:
     static const std::string s_StateID;
-    Cube* m_cube;
-    Cube* m_cube2;
-    Shape* m_shape;
-    float test = 2.0f;
 
-    int slices = 4;
-    unsigned int vao;
-    unsigned int length;
-    unsigned int vbo;
-    unsigned int ibo;
+    std::shared_ptr<MeshRenderSystem> mesh_renderer;
 };
 
 

@@ -5,11 +5,11 @@
 
 
 const int WINDOW_WIDTH = 800;
-const int WINDOW_HIEGHT = 600;
+const int WINDOW_HEIGHT = 600;
 
 int main()
 {
-    if (Game::Instance()->init(WINDOW_WIDTH, WINDOW_HIEGHT) == -1)
+    if (Game::Instance()->init(WINDOW_WIDTH, WINDOW_HEIGHT) == -1)
         return -1;
 
     while ( Game::Instance()->running() )
