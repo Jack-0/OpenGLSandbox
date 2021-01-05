@@ -10,6 +10,7 @@
 #include <GLFW/glfw3.h>
 #include <ecs/ECSManager.h>
 #include <ecs/systems/MeshRenderSystem.h>
+#include <random>
 
 const std::string TestState::s_StateID = "TEST";
 
@@ -31,11 +32,25 @@ bool TestState::onEnter(){
     // TODO here render a 3d MESH cube
     mesh_renderer = Game::Instance()->get_ecs()->register_system<MeshRenderSystem>(); // TODO maybe a state should have it's own ECS
     
-    Entity cube = Game::Instance()->get_ecs()->create_entity();
-    Game::Instance()->get_ecs()->add_component_to_entity(cube, MeshComponent{"../res/object/cube/cube.obj", NULL});
-    Game::Instance()->get_ecs()->add_component_to_entity(cube, ShaderComponent{"../res/shaders/model_loading.vert","../res/shaders/model_loading.frag", NULL});
-    Game::Instance()->get_ecs()->add_component_to_entity(cube, TransformComponent{{0,0,0},{0,0,0},{1,1,1}});
+    std::default_random_engine rand;
+    std::uniform_real_distribution<float> rand_rot(0.0f, 360.0f);
     
+    float x = -4.5;
+    for(int i = 0; i < 4; i++)
+    {
+        
+        glm::vec3 pos = {x, 0, -10};
+        glm::vec3 rotation = {rand_rot(rand),rand_rot(rand),rand_rot(rand)};
+        glm::vec3 scale = {1.0f, 1.0f, 1.0f};
+        
+        Entity cube = Game::Instance()->get_ecs()->create_entity();
+        Game::Instance()->get_ecs()->add_component_to_entity(cube, MeshComponent{"../res/object/cube/cube.obj", NULL});
+        Game::Instance()->get_ecs()->add_component_to_entity(cube, ShaderComponent{"../res/shaders/model_loading.vert",
+                                                                                   "../res/shaders/model_loading.frag",
+                                                                                   NULL});
+        Game::Instance()->get_ecs()->add_component_to_entity(cube, TransformComponent{pos,rotation,scale});
+        x += 3;
+    }
     mesh_renderer->init();
 }
 
