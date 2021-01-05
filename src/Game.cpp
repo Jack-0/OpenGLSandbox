@@ -122,7 +122,8 @@ int Game::init(int window_width, int window_height)
 
     // remove cursor and keep mouse focus
     ///glfwSetInputMode(m_window, GLFW_CURSOR, GLFW_CURSOR_DISABLED); // TODO current state should decide this i.e menu would set input enabled game disabled
-
+    glfwSetCursorPos(m_window, window_width/2, window_height/2); // ensure the cursor is centered for the scene
+    
     //ECSManager::Instance()->init();
     return 0;
 }
