@@ -44,7 +44,13 @@ public:
             // render the loaded model
             glm::mat4 model = glm::mat4(1.0f);
             model = glm::translate(model, transform.pos); // translate it down so it's at the center of the scene
-            model = glm::scale(model, glm::vec3(1.0f, 1.0f, 1.0f));	// it's a bit too big for our scene, so scale it down
+            model = glm::scale(model, transform.scale);	// it's a bit too big for our scene, so scale it down
+            
+            // apply rotation transform
+            model = glm::rotate(model, glm::radians(transform.rotation.x), glm::vec3(1,0,0));
+            model = glm::rotate(model, glm::radians(transform.rotation.y), glm::vec3(0,1,0));
+            model = glm::rotate(model, glm::radians(transform.rotation.z), glm::vec3(0,0,1));
+            
             shader.shader->setMat4("model", model);
             mesh.model->Draw(*shader.shader);
         }
