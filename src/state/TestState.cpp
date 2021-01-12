@@ -9,8 +9,8 @@
 
 #include <GLFW/glfw3.h>
 #include <ecs/ECSManager.h>
-#include <ecs/systems/MeshRenderSystem.h>
 #include <random>
+#include <ecs/components/TextComponent.h>
 
 const std::string TestState::s_StateID = "TEST";
 
@@ -20,6 +20,8 @@ void TestState::update()
 
 void TestState::render() {
     mesh_renderer->render();
+    text_renderer->render(); // todo here error
+
 }
 
 bool TestState::onEnter(){
@@ -28,6 +30,16 @@ bool TestState::onEnter(){
     Game::Instance()->get_ecs()->register_component<MeshComponent>();
     Game::Instance()->get_ecs()->register_component<ShaderComponent>();
     Game::Instance()->get_ecs()->register_component<TransformComponent>();
+    Game::Instance()->get_ecs()->register_component<TextComponent>();
+    
+    // TODO text render
+    text_renderer = Game::Instance()->get_ecs()->register_system<TextRenderSystem>();
+    
+    Entity fps_text = Game::Instance()->get_ecs()->create_entity();
+    Game::Instance()->get_ecs()->add_component_to_entity(fps_text, ShaderComponent{"../res/shaders/text.vert", "../res/shaders/text.frag", NULL});
+    Game::Instance()->get_ecs()->add_component_to_entity(fps_text, TransformComponent{glm::vec3{100,100,0} ,glm::vec3 {0,0,0},glm::vec3 {1,1,1}});
+    Game::Instance()->get_ecs()->add_component_to_entity(fps_text, TextComponent{"HelloWorld", glm::vec3{255,255,255}, NULL, NULL, 1.0f});
+    text_renderer->init();
     
     // TODO here render a 3d MESH cube
     mesh_renderer = Game::Instance()->get_ecs()->register_system<MeshRenderSystem>(); // TODO maybe a state should have it's own ECS

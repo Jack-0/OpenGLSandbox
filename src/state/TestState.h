@@ -17,6 +17,7 @@
 
 #include <memory>
 #include <ecs/systems/MeshRenderSystem.h>
+#include <ecs/systems/TextRenderSystem.h>
 
 class TestState : public GameState
 {
@@ -32,8 +33,9 @@ public:
 
 private:
     static const std::string s_StateID;
-
+    
     std::shared_ptr<MeshRenderSystem> mesh_renderer;
+    std::shared_ptr<TextRenderSystem> text_renderer;
 };
 
 
