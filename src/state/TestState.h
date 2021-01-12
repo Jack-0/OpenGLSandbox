@@ -10,8 +10,6 @@
 #include <graphics/Shader.h>
 #include <util/Model.h>
 
-#include <entity/Cube.h>
-#include <entity/Shape.h>
 
 #include "GameState.h"
 

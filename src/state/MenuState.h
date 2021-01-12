@@ -10,8 +10,6 @@
 #include <graphics/Shader.h>
 #include <util/Model.h>
 
-#include <entity/Cube.h>
-#include <entity/Text.h>
 //#include <entity/Shape.h>
 
 #include "GameState.h"
@@ -30,9 +28,6 @@ public:
 
 private:
     static const std::string s_StateID;
-    Text* m_titleText;
-    Text* m_demoText;
-    Text* m_exitText;
 };
 
 

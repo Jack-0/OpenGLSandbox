@@ -5,10 +5,10 @@
 #ifndef OPENGLSANDBOX_RENDERSYSTEM_H
 #define OPENGLSANDBOX_RENDERSYSTEM_H
 
+#include <Game.h>
 #include <ecs/core/System.h>
 #include <ecs/components/MeshComponent.h>
 #include <ecs/components/ShaderComponent.h>
-#include <Game.h>
 #include <ecs/components/TransformComponent.h>
 
 class MeshRenderSystem : public System
