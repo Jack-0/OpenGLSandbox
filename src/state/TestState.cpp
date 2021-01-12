@@ -27,13 +27,24 @@ void TestState::render() {
 bool TestState::onEnter(){
     std::cout  << "State \"" <<s_StateID << "\" loaded!" << std::endl;
     
+    
+    // first register all components to be used
     Game::Instance()->get_ecs()->register_component<MeshComponent>();
     Game::Instance()->get_ecs()->register_component<ShaderComponent>();
     Game::Instance()->get_ecs()->register_component<TransformComponent>();
     Game::Instance()->get_ecs()->register_component<TextComponent>();
     
+    
+    
     // TODO text render
     text_renderer = Game::Instance()->get_ecs()->register_system<TextRenderSystem>();
+    {
+        Signature text_sig;
+        text_sig.set(Game::Instance()->get_ecs()->get_component_type_id<ShaderComponent>());
+        text_sig.set(Game::Instance()->get_ecs()->get_component_type_id<TransformComponent>());
+        text_sig.set(Game::Instance()->get_ecs()->get_component_type_id<TextComponent>());
+        Game::Instance()->get_ecs()->set_system_sig<TextRenderSystem>(text_sig);
+    }
     
     Entity fps_text = Game::Instance()->get_ecs()->create_entity();
     Game::Instance()->get_ecs()->add_component_to_entity(fps_text, ShaderComponent{"../res/shaders/text.vert", "../res/shaders/text.frag", NULL});
@@ -43,6 +54,13 @@ bool TestState::onEnter(){
     
     // TODO here render a 3d MESH cube
     mesh_renderer = Game::Instance()->get_ecs()->register_system<MeshRenderSystem>(); // TODO maybe a state should have it's own ECS
+    {
+        Signature mesh_sig;
+        mesh_sig.set(Game::Instance()->get_ecs()->get_component_type_id<MeshComponent>());
+        mesh_sig.set(Game::Instance()->get_ecs()->get_component_type_id<ShaderComponent>());
+        mesh_sig.set(Game::Instance()->get_ecs()->get_component_type_id<TransformComponent>());
+        Game::Instance()->get_ecs()->set_system_sig<MeshRenderSystem>(mesh_sig);
+    }
     
     std::default_random_engine rand;
     std::uniform_real_distribution<float> rand_rot(0.0f, 360.0f);
