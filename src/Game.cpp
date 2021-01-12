@@ -3,7 +3,6 @@
 //
 
 #include <state/TestState.h>
-#include <state/MenuState.h>
 
 #define STB_IMAGE_IMPLEMENTATION
 #include <glad/glad.h>
