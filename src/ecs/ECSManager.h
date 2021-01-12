@@ -97,6 +97,12 @@ public:
         return m_systemManager->register_system<T>();
     }
     
+    template<typename T>
+    void set_system_sig(Signature signature)
+    {
+        m_systemManager->set_signature<T>(signature);
+    }
+
 
 private:
     
