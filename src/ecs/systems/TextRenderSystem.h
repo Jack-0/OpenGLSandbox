@@ -139,8 +139,6 @@ public:
             auto &shader = Game::Instance()->get_ecs()->get_component<ShaderComponent>(entity);
             auto &text = Game::Instance()->get_ecs()->get_component<TextComponent>(entity);
             
-            std::cout << text.text  << " " << transform.pos.x << " " << transform.pos.y << "\n";
-            
             // activate corresponding render state
             shader.shader->use();
             glUniform3f(glGetUniformLocation(shader.shader->program_id, "textColor"), text.colour.x, text.colour.y, text.colour.z); // last 3  = colour
