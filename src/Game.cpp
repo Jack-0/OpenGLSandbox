@@ -2,7 +2,7 @@
 // Created by jack on 22/08/2020.
 //
 
-#include <state/TestState.h>
+#include <state/MenuState.h>
 
 #define STB_IMAGE_IMPLEMENTATION
 #include <glad/glad.h>
@@ -103,8 +103,8 @@ int Game::init(int window_width, int window_height)
 
 
     m_pGameStateMachine = new GameStateMachine();
-    m_pGameStateMachine->changeState(new TestState()); // TODO test state can be removed
-    //m_pGameStateMachine->changeState(new MenuState());
+    //m_pGameStateMachine->changeState(new TestState()); // TODO test state can be removed
+    m_pGameStateMachine->changeState(new MenuState());
 
     m_running = true;
 
