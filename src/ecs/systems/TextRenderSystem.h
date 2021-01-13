@@ -8,6 +8,7 @@
 #include <ecs/core/System.h>
 #include <ecs/components/TextComponent.h>
 #include <freetype/tttags.h>
+#include <ecs/components/Dimensions2DComponent.h>
 
 static const int PIXEL_HEIGHT = 48;
 
@@ -26,17 +27,15 @@ class TextRenderSystem : public System
 public:
     void init()
     {
-        int i = 0;
         
         for (auto const& entity : m_entities)
         {
-            //if (i > 0) // TODO error with ECS and signatures
-            //    return;
-            //i++;
-            
             auto& transform = Game::Instance()->get_ecs()->get_component<TransformComponent>(entity);
             auto& shader = Game::Instance()->get_ecs()->get_component<ShaderComponent>(entity);
             auto& text = Game::Instance()->get_ecs()->get_component<TextComponent>(entity);
+            auto &dimension2D = Game::Instance()->get_ecs()->get_component<Dimensions2DComponent>(entity);
+            
+            dimension2D.height = PIXEL_HEIGHT; // tODO
     
             shader.shader = new Shader(shader.vert_path, shader.frag_path);
             
@@ -128,16 +127,31 @@ public:
     
     void render()
     {
-        int i = 0;
         for (auto const& entity : m_entities)
         {
-            //if (i > 0) // TODO error with ECS and signatures
-            //    return;
-            //i++;
             
             auto &transform = Game::Instance()->get_ecs()->get_component<TransformComponent>(entity);
             auto &shader = Game::Instance()->get_ecs()->get_component<ShaderComponent>(entity);
             auto &text = Game::Instance()->get_ecs()->get_component<TextComponent>(entity);
+            auto &dimension2D = Game::Instance()->get_ecs()->get_component<Dimensions2DComponent>(entity);
+            
+            
+            // check mouse over TODO maybe this will/should be its own system
+            float mouse_x = Game::Instance()->m_lastMouseX;
+            float mouse_y = Game::Instance()->getScreenHeight() - Game::Instance()->m_lastMouseY; // Y position must be subtracted from screen height to work with entities coord system TODO
+            // set default colour
+            text.colour = {255,255,255}; // set colour to white
+            // check if the mouse is within the text bounds
+            if (mouse_x > transform.pos.x) {
+                if (mouse_x < (transform.pos.x + dimension2D.width)) {
+                    if (mouse_y < transform.pos.y + PIXEL_HEIGHT) {
+                        if (mouse_y >  transform.pos.y) {
+                            // mouse is over the text
+                            text.colour = {0, 240, 0}; // set text colour to green
+                        }
+                    }
+                }
+            }
             
             // activate corresponding render state
             shader.shader->use();
@@ -180,7 +194,7 @@ public:
                 // now advance cursors for next glyph (note that advance is number of 1/64 pixels)
                 temp_x += (ch.Advance >> 6) * text.scale; // bitshift by 6 to get value in pixels (2^6 = 64 (divide amount of 1/64th pixels by 64 to get amount of pixels))
             }
-            //m_pixel_string_len = temp_x;
+            dimension2D.width = temp_x; // todo might be able to remove
             //std::cout << "string = " << m_text << " length = " << m_pixel_string_len << "\n"; // todo
     
             glBindVertexArray(0);
