@@ -10,9 +10,12 @@
 #include <graphics/Shader.h>
 #include <util/Model.h>
 
+#include "GameState.h"
+
+#include <ecs/systems/MenuSystem.h>
+
 //#include <entity/Shape.h>
 
-#include "GameState.h"
 
 class MenuState : public GameState
 {
@@ -28,6 +31,10 @@ public:
 
 private:
     static const std::string s_StateID;
+    
+    
+    std::shared_ptr<MenuSystem> menu_system;
+    static void hello() { std::cout << "HELLO FN CALLED\n"; };
 };
 
 
