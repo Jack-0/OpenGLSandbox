@@ -91,13 +91,15 @@ bool MenuState::onExit()
 
 void MenuState::demo1()
 {
-    std::cout << "demo\n";
-    //Game::Instance()->getStateMachine()->changeState(new TestState());
-    
+    Game::Instance()->getStateMachine()->changeState(new TestState());
 }
 
 void MenuState::demo2()
-{}
+{
+    Game::Instance()->getStateMachine()->changeState(new TestState());
+}
 
 void MenuState::exit()
-{}
+{
+    Game::Instance()->end_loop();
+}

@@ -26,15 +26,6 @@ bool TestState::onEnter(){
     std::cout  << "State \"" <<s_StateID << "\" loaded!" << std::endl;
     
     
-    // first register all components to be used
-    Game::Instance()->get_ecs()->register_component<MeshComponent>();
-    Game::Instance()->get_ecs()->register_component<ShaderComponent>();
-    Game::Instance()->get_ecs()->register_component<TransformComponent>();
-    Game::Instance()->get_ecs()->register_component<TextComponent>();
-    Game::Instance()->get_ecs()->register_component<Dimensions2DComponent>();
-    
-    
-    
     // TODO text render
     text_renderer = Game::Instance()->get_ecs()->register_system<TextRenderSystem>();
     {
