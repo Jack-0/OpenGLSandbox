@@ -55,6 +55,7 @@ public:
     float m_lastMouseX = 0.0f;
     float m_lastMouseY = 0.0f;
     bool m_firstMouse = true;
+    bool m_left_click = false; // TODO bit of a hack try subscriber model
 
 
     // ECS wrappers
@@ -82,6 +83,7 @@ private:
     // callbacks
     static void mouse_callback(GLFWwindow* window, double xpos, double ypos); // TODO
     static void window_size_callback(GLFWwindow* window, int width, int height);
+    static void mouse_button_callback(GLFWwindow* window, int button, int action, int mods);
     
     // init ecs
     void init_ecs();

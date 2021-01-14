@@ -112,7 +112,8 @@ int Game::init(int window_width, int window_height)
     glfwSetWindowUserPointer(m_window, this);
     glfwSetCursorPosCallback(m_window, mouse_callback); // TODO clean code
     glfwSetWindowSizeCallback(m_window, window_size_callback);
-
+    glfwSetMouseButtonCallback(m_window, mouse_button_callback);
+    
     // set last mouse pos TODO review this
     m_lastMouseX = m_windowWidth / 2.0f;
     m_lastMouseY = m_windowHeight / 2.0f;
@@ -194,6 +195,14 @@ void Game::clean()
     glfwTerminate();
 }
 
+void Game::mouse_button_callback(GLFWwindow *window, int button, int action, int mods)
+{
+       //TODO
+    if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS)
+        Game::Instance()->m_left_click = true;
+    else
+        Game::Instance()->m_left_click = false;
+}
 
  void Game::mouse_callback(GLFWwindow* window, double xpos, double ypos)
 {
@@ -250,3 +259,4 @@ void Game::init_ecs()
     m_ecs->register_component<Dimensions2DComponent>();
     m_ecs->register_component<FunctionPointerComponent>();
 }
+

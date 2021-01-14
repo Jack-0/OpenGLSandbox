@@ -32,9 +32,10 @@ public:
                 if (mouse_x < (transform.pos.x + dimension2D.width)) {
                     if (mouse_y < transform.pos.y + PIXEL_HEIGHT) {
                         if (mouse_y >  transform.pos.y) {
-                            // mouse is over the text
+                            // mouse is over the text, change text colour
                             text.colour = {0, 240, 0}; // set text colour to green
-                            if(true) // todo check mouse click
+                            // check for mouse click
+                            if( Game::Instance()->m_left_click )
                             {
                                 func_ptr.fp();
                             }
