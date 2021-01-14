@@ -195,6 +195,8 @@ void Game::clean()
     glfwTerminate();
 }
 
+
+
 void Game::mouse_button_callback(GLFWwindow *window, int button, int action, int mods)
 {
        //TODO
@@ -258,5 +260,10 @@ void Game::init_ecs()
     m_ecs->register_component<TextComponent>();
     m_ecs->register_component<Dimensions2DComponent>();
     m_ecs->register_component<FunctionPointerComponent>();
+}
+
+void Game::end_loop()
+{
+    m_running = false;
 }
 
