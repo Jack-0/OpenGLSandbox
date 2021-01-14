@@ -40,7 +40,9 @@ public:
     void render();
     void update();
     void handleEvents();
+    void end_loop();
     void clean();
+    
 
     // util
     void calculate_fps();
