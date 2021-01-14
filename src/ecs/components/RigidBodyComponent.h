@@ -5,7 +5,7 @@
 #ifndef OPENGLSANDBOX_RIGIDBODYCOMPONENT_H
 #define OPENGLSANDBOX_RIGIDBODYCOMPONENT_H
 
-#include "Math/Vec3.hpp"
+#include <glfw-3.3.2/deps/linmath.h>
 
 struct RigidBodyComponent
 {
