@@ -17,7 +17,10 @@ public:
     std::shared_ptr<T> register_system()
     {
         const char* type_name = typeid(T).name();
-        assert(m_systems.find(type_name) == m_systems.end() && "Registering system more than once");
+        
+        // TODO     do we want to be able to have multiple systems so
+        // TODO     when we switch states 'state' is saved .i.e pause state
+        //assert(m_systems.find(type_name) == m_systems.end() && "Registering system more than once");
     
         // create a pointer to the system and return it so it can be used externally
         auto system = std::make_shared<T>();

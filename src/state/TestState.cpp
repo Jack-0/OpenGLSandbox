@@ -8,9 +8,7 @@
 
 
 #include <GLFW/glfw3.h>
-#include <ecs/ECSManager.h>
 #include <random>
-#include <ecs/components/TextComponent.h>
 
 const std::string TestState::s_StateID = "TEST";
 
@@ -28,14 +26,6 @@ bool TestState::onEnter(){
     std::cout  << "State \"" <<s_StateID << "\" loaded!" << std::endl;
     
     
-    // first register all components to be used
-    Game::Instance()->get_ecs()->register_component<MeshComponent>();
-    Game::Instance()->get_ecs()->register_component<ShaderComponent>();
-    Game::Instance()->get_ecs()->register_component<TransformComponent>();
-    Game::Instance()->get_ecs()->register_component<TextComponent>();
-    
-    
-    
     // TODO text render
     text_renderer = Game::Instance()->get_ecs()->register_system<TextRenderSystem>();
     {
@@ -43,6 +33,7 @@ bool TestState::onEnter(){
         text_sig.set(Game::Instance()->get_ecs()->get_component_type_id<ShaderComponent>());
         text_sig.set(Game::Instance()->get_ecs()->get_component_type_id<TransformComponent>());
         text_sig.set(Game::Instance()->get_ecs()->get_component_type_id<TextComponent>());
+        text_sig.set(Game::Instance()->get_ecs()->get_component_type_id<Dimensions2DComponent>());
         Game::Instance()->get_ecs()->set_system_sig<TextRenderSystem>(text_sig);
     }
     
@@ -50,6 +41,7 @@ bool TestState::onEnter(){
     Game::Instance()->get_ecs()->add_component_to_entity(fps_text, ShaderComponent{"../res/shaders/text.vert", "../res/shaders/text.frag", NULL});
     Game::Instance()->get_ecs()->add_component_to_entity(fps_text, TransformComponent{glm::vec3{100,100,0} ,glm::vec3 {0,0,0},glm::vec3 {1,1,1}});
     Game::Instance()->get_ecs()->add_component_to_entity(fps_text, TextComponent{"HelloWorld", glm::vec3{255,255,255}, NULL, NULL, 1.0f});
+    Game::Instance()->get_ecs()->add_component_to_entity(fps_text, Dimensions2DComponent{0,0});
     text_renderer->init();
     
     // TODO here render a 3d MESH cube

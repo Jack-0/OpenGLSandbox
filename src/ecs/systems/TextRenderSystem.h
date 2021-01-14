@@ -5,9 +5,17 @@
 #ifndef OPENGLSANDBOX_TEXTRENDERSYSTEM_H
 #define OPENGLSANDBOX_TEXTRENDERSYSTEM_H
 
+
 #include <ecs/core/System.h>
 #include <ecs/components/TextComponent.h>
 #include <freetype/tttags.h>
+#include <ecs/components/Dimensions2DComponent.h>
+
+#include <map>
+#include <ecs/components/TransformComponent.h>
+#include <ecs/components/ShaderComponent.h>
+
+#include <Game.h>
 
 static const int PIXEL_HEIGHT = 48;
 
@@ -26,17 +34,15 @@ class TextRenderSystem : public System
 public:
     void init()
     {
-        int i = 0;
         
         for (auto const& entity : m_entities)
         {
-            //if (i > 0) // TODO error with ECS and signatures
-            //    return;
-            //i++;
-            
             auto& transform = Game::Instance()->get_ecs()->get_component<TransformComponent>(entity);
             auto& shader = Game::Instance()->get_ecs()->get_component<ShaderComponent>(entity);
             auto& text = Game::Instance()->get_ecs()->get_component<TextComponent>(entity);
+            auto &dimension2D = Game::Instance()->get_ecs()->get_component<Dimensions2DComponent>(entity);
+            
+            dimension2D.height = PIXEL_HEIGHT; // tODO
     
             shader.shader = new Shader(shader.vert_path, shader.frag_path);
             
@@ -112,7 +118,6 @@ public:
             FT_Done_FreeType(ft);
     
             // configure VAO/VBO for texture quads
-            // -----------------------------------
             glGenVertexArrays(1, &text.vao);
             glGenBuffers(1, &text.vbo);
             glBindVertexArray(text.vao);
@@ -128,16 +133,13 @@ public:
     
     void render()
     {
-        int i = 0;
         for (auto const& entity : m_entities)
         {
-            //if (i > 0) // TODO error with ECS and signatures
-            //    return;
-            //i++;
             
             auto &transform = Game::Instance()->get_ecs()->get_component<TransformComponent>(entity);
             auto &shader = Game::Instance()->get_ecs()->get_component<ShaderComponent>(entity);
             auto &text = Game::Instance()->get_ecs()->get_component<TextComponent>(entity);
+            auto &dimension2D = Game::Instance()->get_ecs()->get_component<Dimensions2DComponent>(entity);
             
             // activate corresponding render state
             shader.shader->use();
@@ -180,8 +182,7 @@ public:
                 // now advance cursors for next glyph (note that advance is number of 1/64 pixels)
                 temp_x += (ch.Advance >> 6) * text.scale; // bitshift by 6 to get value in pixels (2^6 = 64 (divide amount of 1/64th pixels by 64 to get amount of pixels))
             }
-            //m_pixel_string_len = temp_x;
-            //std::cout << "string = " << m_text << " length = " << m_pixel_string_len << "\n"; // todo
+            dimension2D.width = temp_x; // todo needed to check bounds
     
             glBindVertexArray(0);
             glBindTexture(GL_TEXTURE_2D, 0);

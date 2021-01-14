@@ -2,17 +2,22 @@
 // Created by jack on 22/08/2020.
 //
 
-#include <state/TestState.h>
+#include <state/MenuState.h>
 
 #define STB_IMAGE_IMPLEMENTATION
-#include <glad/glad.h>
-#include <ecs/systems/MeshRenderSystem.h>
 #include "Game.h"
 
+#include <glad/glad.h>
+#include <ecs/components/MeshComponent.h>
+#include <ecs/components/ShaderComponent.h>
+#include <ecs/components/Dimensions2DComponent.h>
+#include <ecs/components/TextComponent.h>
+#include <ecs/components/TransformComponent.h>
+#include <ecs/components/FunctionPointerComponent.h>
 
 Game* Game::s_pInstance = 0; // singleton
 
-int Game::initGL()
+int Game::init_gl()
 {
     // glfw: initialize and configure
     // ------------------------------
@@ -80,9 +85,6 @@ int Game::initGL()
     // configure global opengl state
     glEnable(GL_DEPTH_TEST);
 
-    // TODO
-    m_ecs = new ECSManager();
-    m_ecs->init();
     
     return 0;
 }
@@ -92,38 +94,42 @@ int Game::init(int window_width, int window_height)
     m_windowWidth = window_width;
     m_windowHeight = window_height;
 
-    if ( initGL() == -1 )
+    // initialise OpenGL
+    if (init_gl() == -1 )
         return -1;
 
-    // build and compile shaders
-    // -------------------------
-
-    // TODO test
+    // set camera pointer
     m_camera = new Camera (glm::vec3(0.0f, 0.0f, 3.0f));
 
 
-    m_pGameStateMachine = new GameStateMachine();
-    m_pGameStateMachine->changeState(new TestState()); // TODO test state can be removed
-    //m_pGameStateMachine->changeState(new MenuState());
-
+    // set game state to running
     m_running = true;
 
+    // init previous frame time
     m_previousFrame = glfwGetTime();
 
     // callbacks
     glfwSetWindowUserPointer(m_window, this);
     glfwSetCursorPosCallback(m_window, mouse_callback); // TODO clean code
     glfwSetWindowSizeCallback(m_window, window_size_callback);
-
-
+    glfwSetMouseButtonCallback(m_window, mouse_button_callback);
+    
+    // set last mouse pos TODO review this
     m_lastMouseX = m_windowWidth / 2.0f;
     m_lastMouseY = m_windowHeight / 2.0f;
 
-    // remove cursor and keep mouse focus
-    ///glfwSetInputMode(m_window, GLFW_CURSOR, GLFW_CURSOR_DISABLED); // TODO current state should decide this i.e menu would set input enabled game disabled
-    glfwSetCursorPos(m_window, window_width/2, window_height/2); // ensure the cursor is centered for the scene
+    // ensure the cursor is centered for the scene
+    glfwSetCursorPos(m_window, window_width/2, window_height/2);
     
-    //ECSManager::Instance()->init();
+    // init entity component system
+    init_ecs();
+    
+    
+    // init state machine and start the Game in the MenuState
+    m_pGameStateMachine = new GameStateMachine();
+    m_pGameStateMachine->changeState(new MenuState());
+//    m_pGameStateMachine->changeState(new MenuState());
+    
     return 0;
 }
 
@@ -157,22 +163,19 @@ void Game::update()
 void Game::render()
 {
     // render
-    // ------
     glClearColor(m_bgColor.x, m_bgColor.y, m_bgColor.z, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
 
     m_pGameStateMachine->render();
 
     // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
-    // -------------------------------------------------------------------------------
     glfwSwapBuffers(m_window);
     glfwPollEvents();
 }
 
 void Game::calculate_fps()
 {
-    // TIME
+    // time
     float currentFrame = glfwGetTime(); // todo
     m_deltaTime = currentFrame - m_lastFrame;
     m_lastFrame = currentFrame;
@@ -192,6 +195,16 @@ void Game::clean()
     glfwTerminate();
 }
 
+
+
+void Game::mouse_button_callback(GLFWwindow *window, int button, int action, int mods)
+{
+       //TODO
+    if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS)
+        Game::Instance()->m_left_click = true;
+    else
+        Game::Instance()->m_left_click = false;
+}
 
  void Game::mouse_callback(GLFWwindow* window, double xpos, double ypos)
 {
@@ -218,3 +231,39 @@ void Game::window_size_callback(GLFWwindow *window, int width, int height)
     Game::Instance()->m_windowWidth = width;
     Game::Instance()->m_windowHeight = height;
 }
+
+
+template<typename T>
+void Game::ecs_register_component()
+{
+    m_ecs->register_component<T>();
+}
+
+template<typename T>
+void Game::ecs_register_system()
+{
+  m_ecs->register_system<T>();
+}
+
+void Game::init_ecs()
+{
+    // define pointer and init ECS
+    std::cout << "init ecs done\n";
+    m_ecs = new ECSManager();
+    m_ecs->init();
+    std::cout << "init ecs done\n";
+ 
+    // register all components to be used
+    m_ecs->register_component<MeshComponent>();
+    m_ecs->register_component<ShaderComponent>();
+    m_ecs->register_component<TransformComponent>();
+    m_ecs->register_component<TextComponent>();
+    m_ecs->register_component<Dimensions2DComponent>();
+    m_ecs->register_component<FunctionPointerComponent>();
+}
+
+void Game::end_loop()
+{
+    m_running = false;
+}
+
