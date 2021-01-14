@@ -17,6 +17,7 @@
 #include <ecs/ECSManager.h>
 
 
+
 class Game
 {
 public:
@@ -32,43 +33,62 @@ public:
         }
     }
 
+
     int init(int window_width, int window_height);
+    
+    // core
     void render();
     void update();
     void handleEvents();
-
-    void calculate_fps();
-
     void clean();
 
-    bool running() { return m_running;}
-
-    GameStateMachine* getStateMachine() { return m_pGameStateMachine; }
-
-    GLFWwindow* getWindow() { return m_window; }
-
-    Camera* getCamera() { return m_camera; }
-
+    // util
+    void calculate_fps();
+    
+    // encapsulation
     int getScreenWidth() { return m_windowWidth; }
     int getScreenHeight() { return m_windowHeight; }
     int getFPS() {return m_fps; }
-
+    bool running() { return m_running;}
+    
     // mouse
     float m_lastMouseX = 0.0f;
     float m_lastMouseY = 0.0f;
     bool m_firstMouse = true;
 
+
+    // ECS wrappers
+    template<typename T>
+    void ecs_register_component();
+    
+    template<typename T>
+    void ecs_register_system();
+    
+    
+    
+    // pointers
+    GameStateMachine* getStateMachine() { return m_pGameStateMachine; }
+    GLFWwindow* getWindow() { return m_window; }
+    Camera* getCamera() { return m_camera; }
+    // ecs
     ECSManager* get_ecs() { return m_ecs; }
 
 private:
 
+    // pointer to the Entity component system
     ECSManager* m_ecs;
     
+ 
+    // callbacks
     static void mouse_callback(GLFWwindow* window, double xpos, double ypos); // TODO
     static void window_size_callback(GLFWwindow* window, int width, int height);
+    
+    // init ecs
+    void init_ecs();
+    // initialise openGL
+    int init_gl();
 
-    int initGL();
-
+    // window dimensions
     int m_windowWidth;
     int m_windowHeight;
 
