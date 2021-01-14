@@ -8,10 +8,7 @@
 
 
 #include <GLFW/glfw3.h>
-#include <ecs/ECSManager.h>
 #include <random>
-#include <ecs/components/TextComponent.h>
-#include <ecs/components/Dimensions2DComponent.h>
 
 const std::string TestState::s_StateID = "TEST";
 
