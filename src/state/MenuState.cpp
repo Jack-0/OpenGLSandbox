@@ -85,7 +85,8 @@ bool MenuState::onEnter()
 
 bool MenuState::onExit()
 {
-    // hide mouse
+    // hide mouse and ensure the cursor is centered for the scene
+    glfwSetCursorPos(Game::Instance()->getWindow(), Game::Instance()->getScreenWidth()/2, Game::Instance()->getScreenHeight()/2);
     glfwSetInputMode(Game::Instance()->getWindow(), GLFW_CURSOR, GLFW_CURSOR_DISABLED); // hide mouse
 }
 
