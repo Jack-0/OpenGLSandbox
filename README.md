@@ -7,12 +7,13 @@ Code compiles and runs on both Linux and Windows.
 
 ## How to install on linux
 
-1. `$ git clone https://github.com/Jack-0/HelloOpenGL` <br> 
-2. `$ mkdir build` <br>
-3. `$ cd build` <br>
-4. `$ cmake ..` <br>
-5. `$ make -j7` <br>
-6. `$ ./OpenGLSandbox` <br> 
+1. `$ git clone https://github.com/Jack-0/OpenGLSandbox` <br> 
+2. `$ cd OpenGLSandbox` <br>
+3. `$ mkdir build` <br>
+4. `$ cd build` <br>
+5. `$ cmake ..` <br>
+6. `$ make -j7` <br>
+7. `$ ./OpenGLSandbox` <br> 
 
 ## Dependencies
 - GLFW
