@@ -1,5 +1,7 @@
 # OpenGL Sandbox
-Writing code to learn OpenGL via https://learnopengl.com/.
+
+Writing code to learn OpenGL via https://learnopengl.com/. <br>
+The project has now turned into a sort of small game engine. :see_no_evil:
 
 ## Description
 The code is compiled using cmake.
@@ -21,7 +23,7 @@ Code compiles and runs on both Linux and Windows.
 - GLAD
 - GLM
 
-## Problems and solutions
+## Problems and solutions :monocle_face:
 
 #### Clion (project file is not linking correctly)
 1. When building using CLion it maybe necessary to delete cmake-build-debug 
