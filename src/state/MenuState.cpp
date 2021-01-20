@@ -51,7 +51,6 @@ bool MenuState::onEnter()
         Game::Instance()->get_ecs()->set_system_sig<MenuSystem>(text_sig);
     }
     
-    
     Entity title_text = Game::Instance()->get_ecs()->create_entity();
     Game::Instance()->get_ecs()->add_component_to_entity(title_text, ShaderComponent{"../res/shaders/text.vert", "../res/shaders/text.frag", NULL});
     Game::Instance()->get_ecs()->add_component_to_entity(title_text, TransformComponent{glm::vec3{10,Game::Instance()->getScreenHeight()-PIXEL_HEIGHT-10,0} ,glm::vec3 {0,0,0},glm::vec3 {1,1,1}});
@@ -79,15 +78,27 @@ bool MenuState::onEnter()
     Game::Instance()->get_ecs()->add_component_to_entity(exit_text, Dimensions2DComponent{0,0});
     Game::Instance()->get_ecs()->add_component_to_entity(exit_text, FunctionPointerComponent{exit});
     
+    m_entities.push_back(title_text);
+    m_entities.push_back(demo1_text);
+    m_entities.push_back(demo2_text);
+    m_entities.push_back(exit_text);
+    
     text_system->init();
     
 }
 
 bool MenuState::onExit()
 {
+    // clean entities
+    for (auto const& entity : m_entities)
+    {
+        Game::Instance()->get_ecs()->destroy_entity(entity);
+    }
+    
     // hide mouse and ensure the cursor is centered for the scene
     glfwSetCursorPos(Game::Instance()->getWindow(), Game::Instance()->getScreenWidth()/2, Game::Instance()->getScreenHeight()/2);
     glfwSetInputMode(Game::Instance()->getWindow(), GLFW_CURSOR, GLFW_CURSOR_DISABLED); // hide mouse
+    
 }
 
 void MenuState::demo1()
