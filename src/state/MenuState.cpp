@@ -16,6 +16,11 @@
 
 const std::string MenuState::s_StateID = "MENU";
 
+// aliases for the Game singleton
+#define game Game::Instance()
+#define ecs Game::Instance()->get_ecs()
+#define menu_system Game::Instance()->get_menu_system()
+#define text_system Game::Instance()->get_text_system()
 
 void MenuState::update()
 {
@@ -34,83 +39,62 @@ bool MenuState::onEnter()
     // show mouse
     glfwSetInputMode(Game::Instance()->getWindow(), GLFW_CURSOR, GLFW_CURSOR_NORMAL);
     
-    text_system = Game::Instance()->get_ecs()->register_system<TextRenderSystem>();
-    {
-        Signature text_sig;
-        text_sig.set(Game::Instance()->get_ecs()->get_component_type_id<ShaderComponent>());
-        text_sig.set(Game::Instance()->get_ecs()->get_component_type_id<TransformComponent>());
-        text_sig.set(Game::Instance()->get_ecs()->get_component_type_id<TextComponent>());
-        text_sig.set(Game::Instance()->get_ecs()->get_component_type_id<Dimensions2DComponent>());
-        Game::Instance()->get_ecs()->set_system_sig<TextRenderSystem>(text_sig);
-    }
+    // create menu title component
+    Entity title_text = ecs->create_entity();
+    ecs->add_component_to_entity(title_text, ShaderComponent{"../res/shaders/text.vert", "../res/shaders/text.frag", NULL});
+    ecs->add_component_to_entity(title_text, TransformComponent{glm::vec3{10,Game::Instance()->getScreenHeight()-PIXEL_HEIGHT-10,0} ,glm::vec3 {0,0,0},glm::vec3 {1,1,1}});
+    ecs->add_component_to_entity(title_text, TextComponent{"Hello OpenGL", glm::vec3{255,255,255}, NULL, NULL, 1.0f});
+    ecs->add_component_to_entity(title_text, Dimensions2DComponent{0,0});
     
-    menu_system = Game::Instance()->get_ecs()->register_system<MenuSystem>();
-    {
-        Signature text_sig;
-        text_sig.set(Game::Instance()->get_ecs()->get_component_type_id<ShaderComponent>());
-        text_sig.set(Game::Instance()->get_ecs()->get_component_type_id<TransformComponent>());
-        text_sig.set(Game::Instance()->get_ecs()->get_component_type_id<TextComponent>());
-        text_sig.set(Game::Instance()->get_ecs()->get_component_type_id<Dimensions2DComponent>());
-        text_sig.set(Game::Instance()->get_ecs()->get_component_type_id<FunctionPointerComponent>());
-        Game::Instance()->get_ecs()->set_system_sig<MenuSystem>(text_sig);
-    }
+    // create menu button component
+    Entity demo1_text = ecs->create_entity();
+    ecs->add_component_to_entity(demo1_text, ShaderComponent{"../res/shaders/text.vert", "../res/shaders/text.frag", NULL});
+    ecs->add_component_to_entity(demo1_text, TransformComponent{glm::vec3{30,Game::Instance()->getScreenHeight()-PIXEL_HEIGHT-10 - PIXEL_HEIGHT*2,0} ,glm::vec3 {0,0,0},glm::vec3 {1,1,1}});
+    ecs->add_component_to_entity(demo1_text, TextComponent{"> Cubes", glm::vec3{255,255,255}, NULL, NULL, 1.0f});
+    ecs->add_component_to_entity(demo1_text, Dimensions2DComponent{0,0});
+    ecs->add_component_to_entity(demo1_text, FunctionPointerComponent{demo1});
     
-    Entity title_text = Game::Instance()->get_ecs()->create_entity();
-    Game::Instance()->get_ecs()->add_component_to_entity(title_text, ShaderComponent{"../res/shaders/text.vert", "../res/shaders/text.frag", NULL});
-    Game::Instance()->get_ecs()->add_component_to_entity(title_text, TransformComponent{glm::vec3{10,Game::Instance()->getScreenHeight()-PIXEL_HEIGHT-10,0} ,glm::vec3 {0,0,0},glm::vec3 {1,1,1}});
-    Game::Instance()->get_ecs()->add_component_to_entity(title_text, TextComponent{"Hello OpenGL", glm::vec3{255,255,255}, NULL, NULL, 1.0f});
-    Game::Instance()->get_ecs()->add_component_to_entity(title_text, Dimensions2DComponent{0,0});
+    // create menu button component
+    Entity demo2_text = ecs->create_entity();
+    ecs->add_component_to_entity(demo2_text, ShaderComponent{"../res/shaders/text.vert", "../res/shaders/text.frag", NULL});
+    ecs->add_component_to_entity(demo2_text, TransformComponent{glm::vec3{30,Game::Instance()->getScreenHeight()-PIXEL_HEIGHT-1 - PIXEL_HEIGHT*4,0} ,glm::vec3 {0,0,0},glm::vec3 {1,1,1}});
+    ecs->add_component_to_entity(demo2_text, TextComponent{"> Demo", glm::vec3{255,255,255}, NULL, NULL, 1.0f});
+    ecs->add_component_to_entity(demo2_text, Dimensions2DComponent{0,0});
+    ecs->add_component_to_entity(demo2_text, FunctionPointerComponent{demo2});
     
-    Entity demo1_text = Game::Instance()->get_ecs()->create_entity();
-    Game::Instance()->get_ecs()->add_component_to_entity(demo1_text, ShaderComponent{"../res/shaders/text.vert", "../res/shaders/text.frag", NULL});
-    Game::Instance()->get_ecs()->add_component_to_entity(demo1_text, TransformComponent{glm::vec3{30,Game::Instance()->getScreenHeight()-PIXEL_HEIGHT-10 - PIXEL_HEIGHT*2,0} ,glm::vec3 {0,0,0},glm::vec3 {1,1,1}});
-    Game::Instance()->get_ecs()->add_component_to_entity(demo1_text, TextComponent{"> Cubes", glm::vec3{255,255,255}, NULL, NULL, 1.0f});
-    Game::Instance()->get_ecs()->add_component_to_entity(demo1_text, Dimensions2DComponent{0,0});
-    Game::Instance()->get_ecs()->add_component_to_entity(demo1_text, FunctionPointerComponent{demo1});
+    // create menu button component
+    Entity exit_text = ecs->create_entity();
+    ecs->add_component_to_entity(exit_text, ShaderComponent{"../res/shaders/text.vert", "../res/shaders/text.frag", NULL});
+    ecs->add_component_to_entity(exit_text, TransformComponent{glm::vec3{30,Game::Instance()->getScreenHeight()-PIXEL_HEIGHT-1 - PIXEL_HEIGHT*6,0} ,glm::vec3 {0,0,0},glm::vec3 {1,1,1}});
+    ecs->add_component_to_entity(exit_text, TextComponent{"> Exit", glm::vec3{255,255,255}, NULL, NULL, 1.0f});
+    ecs->add_component_to_entity(exit_text, Dimensions2DComponent{0,0});
+    ecs->add_component_to_entity(exit_text, FunctionPointerComponent{exit});
     
-    Entity demo2_text = Game::Instance()->get_ecs()->create_entity();
-    Game::Instance()->get_ecs()->add_component_to_entity(demo2_text, ShaderComponent{"../res/shaders/text.vert", "../res/shaders/text.frag", NULL});
-    Game::Instance()->get_ecs()->add_component_to_entity(demo2_text, TransformComponent{glm::vec3{30,Game::Instance()->getScreenHeight()-PIXEL_HEIGHT-1 - PIXEL_HEIGHT*4,0} ,glm::vec3 {0,0,0},glm::vec3 {1,1,1}});
-    Game::Instance()->get_ecs()->add_component_to_entity(demo2_text, TextComponent{"> Demo", glm::vec3{255,255,255}, NULL, NULL, 1.0f});
-    Game::Instance()->get_ecs()->add_component_to_entity(demo2_text, Dimensions2DComponent{0,0});
-    Game::Instance()->get_ecs()->add_component_to_entity(demo2_text, FunctionPointerComponent{demo2});
-    
-    Entity exit_text = Game::Instance()->get_ecs()->create_entity();
-    Game::Instance()->get_ecs()->add_component_to_entity(exit_text, ShaderComponent{"../res/shaders/text.vert", "../res/shaders/text.frag", NULL});
-    Game::Instance()->get_ecs()->add_component_to_entity(exit_text, TransformComponent{glm::vec3{30,Game::Instance()->getScreenHeight()-PIXEL_HEIGHT-1 - PIXEL_HEIGHT*6,0} ,glm::vec3 {0,0,0},glm::vec3 {1,1,1}});
-    Game::Instance()->get_ecs()->add_component_to_entity(exit_text, TextComponent{"> Exit", glm::vec3{255,255,255}, NULL, NULL, 1.0f});
-    Game::Instance()->get_ecs()->add_component_to_entity(exit_text, Dimensions2DComponent{0,0});
-    Game::Instance()->get_ecs()->add_component_to_entity(exit_text, FunctionPointerComponent{exit});
-    
+    // init the text system todo review
     text_system->init();
-    
 }
 
 bool MenuState::onExit()
 {
-    // clean entities
-    //for (auto const& entity : m_entities)
-    //{
-    //    Game::Instance()->get_ecs()->destroy_entity(entity);
-    //}
+    // todo clean entities
     
     // hide mouse and ensure the cursor is centered for the scene
-    glfwSetCursorPos(Game::Instance()->getWindow(), Game::Instance()->getScreenWidth()/2, Game::Instance()->getScreenHeight()/2);
-    glfwSetInputMode(Game::Instance()->getWindow(), GLFW_CURSOR, GLFW_CURSOR_DISABLED); // hide mouse
+    glfwSetCursorPos(game->getWindow(), game->getScreenWidth()/2, game->getScreenHeight()/2);
+    glfwSetInputMode(game->getWindow(), GLFW_CURSOR, GLFW_CURSOR_DISABLED); // hide mouse
     
 }
 
 void MenuState::demo1()
 {
-    Game::Instance()->getStateMachine()->changeState(new TestState());
+    game->getStateMachine()->changeState(new TestState());
 }
 
 void MenuState::demo2()
 {
-    Game::Instance()->getStateMachine()->changeState(new TestState());
+    game->getStateMachine()->changeState(new TestState());
 }
 
 void MenuState::exit()
 {
-    Game::Instance()->end_loop();
+    game->end_loop();
 }
