@@ -9,6 +9,10 @@
 #include <Game.h>
 #include <GLFW/glfw3.h>
 #include <ecs/components/FunctionPointerComponent.h>
+#include <ecs/components/ShaderComponent.h>
+#include <ecs/components/TransformComponent.h>
+#include <ecs/components/TextComponent.h>
+#include <ecs/components/Dimensions2DComponent.h>
 
 const std::string MenuState::s_StateID = "MENU";
 
@@ -78,11 +82,6 @@ bool MenuState::onEnter()
     Game::Instance()->get_ecs()->add_component_to_entity(exit_text, Dimensions2DComponent{0,0});
     Game::Instance()->get_ecs()->add_component_to_entity(exit_text, FunctionPointerComponent{exit});
     
-    m_entities.push_back(title_text);
-    m_entities.push_back(demo1_text);
-    m_entities.push_back(demo2_text);
-    m_entities.push_back(exit_text);
-    
     text_system->init();
     
 }
@@ -90,10 +89,10 @@ bool MenuState::onEnter()
 bool MenuState::onExit()
 {
     // clean entities
-    for (auto const& entity : m_entities)
-    {
-        Game::Instance()->get_ecs()->destroy_entity(entity);
-    }
+    //for (auto const& entity : m_entities)
+    //{
+    //    Game::Instance()->get_ecs()->destroy_entity(entity);
+    //}
     
     // hide mouse and ensure the cursor is centered for the scene
     glfwSetCursorPos(Game::Instance()->getWindow(), Game::Instance()->getScreenWidth()/2, Game::Instance()->getScreenHeight()/2);
