@@ -5,6 +5,7 @@
 #ifndef ECS_ENTITYMANAGER_H
 #define ECS_ENTITYMANAGER_H
 
+#include <iostream>
 #include <queue>
 #include <cstdint>
 #include <bitset>

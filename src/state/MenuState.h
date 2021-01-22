@@ -14,6 +14,7 @@
 
 #include <ecs/systems/TextRenderSystem.h>
 #include <ecs/systems/MenuSystem.h>
+#include <memory>
 
 
 class MenuState : public GameState
@@ -37,8 +38,6 @@ private:
     
     std::shared_ptr<TextRenderSystem> text_system;
     std::shared_ptr<MenuSystem> menu_system;
-    
-    std::vector<Entity> m_entities;
 };
 
 

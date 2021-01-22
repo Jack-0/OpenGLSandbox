@@ -5,6 +5,10 @@
 #ifndef OPENGLSANDBOX_TEXTCOMPONENT_H
 #define OPENGLSANDBOX_TEXTCOMPONENT_H
 
+#include <glm/glm.hpp>
+
+static const int PIXEL_HEIGHT = 48;
+
 struct TextComponent
 {
     std::string text;
