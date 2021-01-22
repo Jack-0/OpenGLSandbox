@@ -15,6 +15,8 @@
 #include <graphics/Camera.h>
 #include <ecs/ECSManager.h>
 
+#include <ecs/systems/TextRenderSystem.h>
+#include <ecs/systems/MenuSystem.h>
 
 
 class Game
@@ -72,14 +74,24 @@ public:
     GameStateMachine* getStateMachine() { return m_pGameStateMachine; }
     GLFWwindow* getWindow() { return m_window; }
     Camera* getCamera() { return m_camera; }
+    
     // ecs
     ECSManager* get_ecs() { return m_ecs; }
+    
+    // system
+    std::shared_ptr<TextRenderSystem> get_text_system() {return m_text_system; }
+    std::shared_ptr<MenuSystem> get_menu_system() { return m_menu_system; }
+    
+    
 
 private:
 
     // pointer to the Entity component system
     ECSManager* m_ecs;
     
+    // systems
+    std::shared_ptr<TextRenderSystem> m_text_system;
+    std::shared_ptr<MenuSystem> m_menu_system;
  
     // callbacks
     static void mouse_callback(GLFWwindow* window, double xpos, double ypos); // TODO
@@ -88,6 +100,9 @@ private:
     
     // init ecs
     void init_ecs();
+    // init system
+    void init_systems();
+    
     // initialise openGL
     int init_gl();
 
