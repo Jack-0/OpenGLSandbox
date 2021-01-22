@@ -17,7 +17,6 @@
 
 #include <Game.h>
 
-static const int PIXEL_HEIGHT = 48;
 
 struct Character {
     unsigned int TextureID;  // ID handle of the glyph texture
