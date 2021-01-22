@@ -11,7 +11,6 @@
 #include <glad/glad.h> // TODO the order really matters
 #include <GLFW/glfw3.h> // TODO ^
 
-// todo add vbo vao
 // setup to be a opengl wrapper
 #include <graphics/Camera.h>
 #include <ecs/ECSManager.h>
