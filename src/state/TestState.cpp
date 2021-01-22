@@ -9,6 +9,11 @@
 
 #include <GLFW/glfw3.h>
 #include <random>
+#include <ecs/components/MeshComponent.h>
+#include <ecs/components/ShaderComponent.h>
+#include <ecs/components/TransformComponent.h>
+#include <ecs/components/TextComponent.h>
+#include <ecs/components/Dimensions2DComponent.h>
 
 const std::string TestState::s_StateID = "TEST";
 
