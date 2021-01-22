@@ -19,7 +19,6 @@ void MeshRenderSystem::init()
         mesh.model = new Model(mesh.model_string_path);
         shader.shader = new Shader(shader.vert_path, shader.frag_path);
     }
-    
 }
 
 void MeshRenderSystem::render()
