@@ -5,6 +5,7 @@
 #ifndef OPENGLSANDBOX_SHADERCOMPONENT_H
 #define OPENGLSANDBOX_SHADERCOMPONENT_H
 
+#include <graphics/Shader.h>
 
 struct ShaderComponent
 {
