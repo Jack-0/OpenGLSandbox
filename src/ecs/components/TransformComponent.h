@@ -5,6 +5,7 @@
 #ifndef OPENGLSANDBOX_TRANSFORMCOMPONENT_H
 #define OPENGLSANDBOX_TRANSFORMCOMPONENT_H
 
+#include <glm/glm.hpp>
 
 struct TransformComponent
 {
