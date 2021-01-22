@@ -35,9 +35,6 @@ private:
     static void demo1();
     static void demo2();
     static void exit();
-    
-    std::shared_ptr<TextRenderSystem> text_system;
-    std::shared_ptr<MenuSystem> menu_system;
 };
 
 
