@@ -154,7 +154,12 @@ void Game::handleEvents()
         m_camera->ProcessKeyboard(LEFT, m_deltaTime);
     if (glfwGetKey(m_window, GLFW_KEY_D) == GLFW_PRESS)
         m_camera->ProcessKeyboard(RIGHT, m_deltaTime);
-
+    
+    if (glfwGetKey(m_window, GLFW_KEY_E) == GLFW_PRESS)
+        glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
+    
+    if (glfwGetKey(m_window, GLFW_KEY_F) == GLFW_PRESS)
+        glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
 }
 
 void Game::update()
