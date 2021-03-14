@@ -16,7 +16,20 @@ void MeshRenderSystem::init()
         auto& mesh = Game::Instance()->get_ecs()->get_component<MeshComponent>(entity);
         auto& shader = Game::Instance()->get_ecs()->get_component<ShaderComponent>(entity);
         
-        mesh.model = new Model(mesh.model_string_path);
+        // check if model already exists
+        if ( models.find(mesh.model_string_path) != models.end() )
+        {
+            // model has been created before no need to initialise
+            mesh.model = models[mesh.model_string_path];
+        }
+        else
+        {
+            // model has not been created before. Create it and store a reference to it within the map
+            models[mesh.model_string_path] = new Model(mesh.model_string_path);
+            mesh.model = models[mesh.model_string_path];
+        }
+
+        //mesh.model = new Model(mesh.model_string_path);
         shader.shader = new Shader(shader.vert_path, shader.frag_path);
     }
 }
