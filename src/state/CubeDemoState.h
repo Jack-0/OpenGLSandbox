@@ -2,8 +2,8 @@
 // Created by jack on 22/08/2020.
 //
 
-#ifndef OPENGLSANDBOX_TESTSTATE_H
-#define OPENGLSANDBOX_TESTSTATE_H
+#ifndef OPENGLSANDBOX_CUBEDEMOSTATE_H
+#define OPENGLSANDBOX_CUBEDEMOSTATE_H
 
 #include <std_image.h>
 //#define STB_IMAGE_IMPLEMENTATION
@@ -17,7 +17,7 @@
 #include <ecs/systems/MeshRenderSystem.h>
 #include <ecs/systems/TextRenderSystem.h>
 
-class TestState : public GameState
+class CubeDemoState : public GameState
 {
 public:
 
@@ -37,4 +37,4 @@ private:
 };
 
 
-#endif //OPENGLSANDBOX_TESTSTATE_H
+#endif //OPENGLSANDBOX_CUBEDEMOSTATE_H

@@ -4,7 +4,7 @@
 
 #include <iostream>
 #include "MenuState.h"
-#include "TestState.h"
+#include "CubeDemoState.h"
 
 #include <Game.h>
 #include <GLFW/glfw3.h>
@@ -86,12 +86,12 @@ bool MenuState::onExit()
 
 void MenuState::demo1()
 {
-    game->getStateMachine()->changeState(new TestState());
+    game->getStateMachine()->changeState(new CubeDemoState());
 }
 
 void MenuState::demo2()
 {
-    game->getStateMachine()->changeState(new TestState());
+    game->getStateMachine()->changeState(new CubeDemoState());
 }
 
 void MenuState::exit()

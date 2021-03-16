@@ -4,7 +4,7 @@
 
 #include <iostream>
 #include <Game.h>
-#include "TestState.h"
+#include "CubeDemoState.h"
 
 
 #include <GLFW/glfw3.h>
@@ -17,19 +17,19 @@
 
 #include <chrono>
 
-const std::string TestState::s_StateID = "TEST";
+const std::string CubeDemoState::s_StateID = "CUBE_DEMO_STATE";
 
-void TestState::update()
+void CubeDemoState::update()
 {
 }
 
-void TestState::render() {
+void CubeDemoState::render() {
     mesh_renderer->render();
     text_renderer->render(); // todo here error
 
 }
 
-bool TestState::onEnter(){
+bool CubeDemoState::onEnter(){
     std::cout  << "State \"" <<s_StateID << "\" loaded!" << std::endl;
     
     
@@ -119,6 +119,6 @@ bool TestState::onEnter(){
     << "Total time = " << ms_total.count() << "ms\n";
 }
 
-bool TestState::onExit()
+bool CubeDemoState::onExit()
 {
 }
