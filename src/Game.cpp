@@ -67,6 +67,7 @@ int Game::init_gl()
     ///glfwSetFramebufferSizeCallback(m_window, framebuffer_size_callback);
     ///glfwSetCursorPosCallback(m_window, mouse_callback);
     ///glfwSetScrollCallback(m_window, scroll_callback);
+    
 
     // tell GLFW to capture our mouse
     glfwSetInputMode(m_window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
@@ -113,6 +114,7 @@ int Game::init(int window_width, int window_height)
     glfwSetCursorPosCallback(m_window, mouse_callback); // TODO clean code
     glfwSetWindowSizeCallback(m_window, window_size_callback);
     glfwSetMouseButtonCallback(m_window, mouse_button_callback);
+    glfwSetFramebufferSizeCallback(m_window, frame_buffer_size_callback);
     
     // set last mouse pos TODO review this
     m_lastMouseX = m_windowWidth / 2.0f;
@@ -203,7 +205,6 @@ void Game::clean()
 }
 
 
-
 void Game::mouse_button_callback(GLFWwindow *window, int button, int action, int mods)
 {
        //TODO
@@ -237,6 +238,13 @@ void Game::window_size_callback(GLFWwindow *window, int width, int height)
     std::cout << "Window resized new width : height = " << width << " : " << height << "\n";
     Game::Instance()->m_windowWidth = width;
     Game::Instance()->m_windowHeight = height;
+}
+
+// changes view port size upon screen resize
+void Game::frame_buffer_size_callback(GLFWwindow* window, int width, int height)
+{
+    glViewport(0,0, width, height);
+    Game::Instance()->render();
 }
 
 
