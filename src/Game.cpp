@@ -125,9 +125,6 @@ int Game::init(int window_width, int window_height)
     
     // init entity component system
     init_ecs();
-    // init systems
-    init_systems();
-    
     
     // init state machine and start the Game in the MenuState
     m_pGameStateMachine = new GameStateMachine();
@@ -275,30 +272,6 @@ void Game::init_ecs()
     m_ecs->register_component<TextComponent>();
     m_ecs->register_component<Dimensions2DComponent>();
     m_ecs->register_component<FunctionPointerComponent>();
-}
-
-void Game::init_systems()
-{
-    m_text_system = Game::Instance()->get_ecs()->register_system<TextRenderSystem>();
-    {
-        Signature sig;
-        sig.set(Game::Instance()->get_ecs()->get_component_type_id<ShaderComponent>());
-        sig.set(Game::Instance()->get_ecs()->get_component_type_id<TransformComponent>());
-        sig.set(Game::Instance()->get_ecs()->get_component_type_id<TextComponent>());
-        sig.set(Game::Instance()->get_ecs()->get_component_type_id<Dimensions2DComponent>());
-        Game::Instance()->get_ecs()->set_system_sig<TextRenderSystem>(sig);
-    }
-    
-    m_menu_system = Game::Instance()->get_ecs()->register_system<MenuSystem>();
-    {
-        Signature sig;
-        sig.set(Game::Instance()->get_ecs()->get_component_type_id<ShaderComponent>());
-        sig.set(Game::Instance()->get_ecs()->get_component_type_id<TransformComponent>());
-        sig.set(Game::Instance()->get_ecs()->get_component_type_id<TextComponent>());
-        sig.set(Game::Instance()->get_ecs()->get_component_type_id<Dimensions2DComponent>());
-        sig.set(Game::Instance()->get_ecs()->get_component_type_id<FunctionPointerComponent>());
-        Game::Instance()->get_ecs()->set_system_sig<MenuSystem>(sig);
-    }
 }
 
 void Game::end_loop()

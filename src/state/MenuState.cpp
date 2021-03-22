@@ -19,23 +19,43 @@ const std::string MenuState::s_StateID = "MENU";
 // aliases for the Game singleton
 #define game Game::Instance()
 #define ecs Game::Instance()->get_ecs()
-#define menu_system Game::Instance()->get_menu_system()
-#define text_system Game::Instance()->get_text_system()
 
 void MenuState::update()
 {
-    menu_system->update();
+    m_menu_system->update();
 }
 
 void MenuState::render()
 {
-    text_system->render();
+    m_text_system->render();
 }
 
 bool MenuState::onEnter()
 {
     std::cout  << "State \"" <<s_StateID << "\" loaded!" << std::endl;
     
+    m_text_system = Game::Instance()->get_ecs()->register_system<TextRenderSystem>();
+    {
+        Signature sig;
+        sig.set(Game::Instance()->get_ecs()->get_component_type_id<ShaderComponent>());
+        sig.set(Game::Instance()->get_ecs()->get_component_type_id<TransformComponent>());
+        sig.set(Game::Instance()->get_ecs()->get_component_type_id<TextComponent>());
+        sig.set(Game::Instance()->get_ecs()->get_component_type_id<Dimensions2DComponent>());
+        Game::Instance()->get_ecs()->set_system_sig<TextRenderSystem>(sig);
+    }
+    
+    m_menu_system = Game::Instance()->get_ecs()->register_system<MenuSystem>();
+    {
+        Signature sig;
+        sig.set(Game::Instance()->get_ecs()->get_component_type_id<ShaderComponent>());
+        sig.set(Game::Instance()->get_ecs()->get_component_type_id<TransformComponent>());
+        sig.set(Game::Instance()->get_ecs()->get_component_type_id<TextComponent>());
+        sig.set(Game::Instance()->get_ecs()->get_component_type_id<Dimensions2DComponent>());
+        sig.set(Game::Instance()->get_ecs()->get_component_type_id<FunctionPointerComponent>());
+        Game::Instance()->get_ecs()->set_system_sig<MenuSystem>(sig);
+    }
+
+
     // show mouse
     glfwSetInputMode(Game::Instance()->getWindow(), GLFW_CURSOR, GLFW_CURSOR_NORMAL);
     
@@ -71,17 +91,26 @@ bool MenuState::onEnter()
     ecs->add_component_to_entity(exit_text, FunctionPointerComponent{exit});
     
     // init the text system todo review
-    text_system->init();
+    m_text_system->init();
+
+    m_entities.push_back(title_text);
+    m_entities.push_back(demo1_text);
+    m_entities.push_back(demo2_text);
+    m_entities.push_back(exit_text);
 }
 
 bool MenuState::onExit()
 {
     // todo clean entities
+    for (Entity e : m_entities)
+    {
+        //ecs->remove_component<TextComponent>(e);
+        //ecs->destroy_entity(e);
+    }
     
     // hide mouse and ensure the cursor is centered for the scene
     glfwSetCursorPos(game->getWindow(), game->getScreenWidth()/2, game->getScreenHeight()/2);
-    glfwSetInputMode(game->getWindow(), GLFW_CURSOR, GLFW_CURSOR_DISABLED); // hide mouse
-    
+    //glfwSetInputMode(game->getWindow(), GLFW_CURSOR, GLFW_CURSOR_DISABLED); // hide mouse TODO UNCOMMENT
 }
 
 void MenuState::demo1()
