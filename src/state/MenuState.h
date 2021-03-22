@@ -29,6 +29,8 @@ public:
     virtual bool onEnter();
     virtual bool onExit();
 
+    virtual void clean();
+
     virtual std::string getStateID() const { return s_StateID; }
 
 private:
@@ -38,7 +40,6 @@ private:
     static void demo2();
     static void exit();
     std::vector<Entity> m_entities; 
-    
     std::shared_ptr<TextRenderSystem> m_text_system;
     std::shared_ptr<MenuSystem> m_menu_system;
 };

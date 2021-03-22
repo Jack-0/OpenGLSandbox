@@ -25,7 +25,7 @@ void CubeDemoState::update()
 
 void CubeDemoState::render() {
     mesh_renderer->render();
-    text_renderer->render(); // todo here error
+    //text_renderer->render(); // todo here error
 
 }
 
@@ -34,6 +34,7 @@ bool CubeDemoState::onEnter(){
     
     
     // TODO text render
+    /*
     text_renderer = Game::Instance()->get_ecs()->register_system<TextRenderSystem>();
     {
         Signature text_sig;
@@ -50,6 +51,7 @@ bool CubeDemoState::onEnter(){
     Game::Instance()->get_ecs()->add_component_to_entity(fps_text, TextComponent{"HelloWorld", glm::vec3{255,255,255}, NULL, NULL, 1.0f});
     Game::Instance()->get_ecs()->add_component_to_entity(fps_text, Dimensions2DComponent{0,0});
     text_renderer->init();
+    */
     
     // TODO here render a 3d MESH cube
     mesh_renderer = Game::Instance()->get_ecs()->register_system<MeshRenderSystem>(); // TODO maybe a state should have it's own ECS
@@ -77,7 +79,7 @@ bool CubeDemoState::onEnter(){
     float y = 0;
     
     
-    for(int i = 0; i < 500; i++)
+    for(int i = 0; i < 300; i++)
     {    
         // skip the first cube to create a cube grid
         if( i != 0)
@@ -121,4 +123,9 @@ bool CubeDemoState::onEnter(){
 
 bool CubeDemoState::onExit()
 {
+}
+
+void CubeDemoState::clean()
+{
+    
 }

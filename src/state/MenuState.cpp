@@ -101,18 +101,12 @@ bool MenuState::onEnter()
 
 bool MenuState::onExit()
 {
-    // todo clean entities
-    for (Entity e : m_entities)
-    {
-        //ecs->remove_component<TextComponent>(e);
-        //ecs->destroy_entity(e);
-    }
-    
     // hide mouse and ensure the cursor is centered for the scene
     glfwSetCursorPos(game->getWindow(), game->getScreenWidth()/2, game->getScreenHeight()/2);
-    //glfwSetInputMode(game->getWindow(), GLFW_CURSOR, GLFW_CURSOR_DISABLED); // hide mouse TODO UNCOMMENT
+    glfwSetInputMode(game->getWindow(), GLFW_CURSOR, GLFW_CURSOR_DISABLED); // hide mouse TODO UNCOMMENT
 }
 
+// bug due to callback state changes before we can clean
 void MenuState::demo1()
 {
     game->getStateMachine()->changeState(new CubeDemoState());
@@ -126,4 +120,14 @@ void MenuState::demo2()
 void MenuState::exit()
 {
     game->end_loop();
+}
+
+void MenuState::clean()
+{
+    // todo clean entities
+    for (Entity e : m_entities)
+    {
+        //ecs->remove_component<TextComponent>(e);
+        ecs->destroy_entity(e);
+    }
 }
