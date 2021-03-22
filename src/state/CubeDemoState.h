@@ -27,6 +27,8 @@ public:
     virtual bool onEnter();
     virtual bool onExit();
 
+    virtual void clean();
+
     virtual std::string getStateID() const { return s_StateID; }
 
 private:

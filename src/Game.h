@@ -77,12 +77,6 @@ public:
     
     // ecs
     ECSManager* get_ecs() { return m_ecs; }
-    
-    // system
-    std::shared_ptr<TextRenderSystem> get_text_system() {return m_text_system; }
-    std::shared_ptr<MenuSystem> get_menu_system() { return m_menu_system; }
-    
-    
 
 private:
 
@@ -90,8 +84,6 @@ private:
     ECSManager* m_ecs;
     
     // systems
-    std::shared_ptr<TextRenderSystem> m_text_system;
-    std::shared_ptr<MenuSystem> m_menu_system;
  
     // callbacks
     static void mouse_callback(GLFWwindow* window, double xpos, double ypos); // TODO

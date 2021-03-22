@@ -28,6 +28,8 @@ void GameStateMachine::changeState(GameState *pState)
 {
     std::cout << "[STATE CHANGED]\n";
 
+    pState->clean(); // todo
+
     if(!m_gameStates.empty())
     {
         if(m_gameStates.back()->getStateID() == pState->getStateID())
