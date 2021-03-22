@@ -17,10 +17,11 @@ void TextRenderSystem::init()
     
     for (auto const& entity : m_entities)
     {
-        auto& transform = Game::Instance()->get_ecs()->get_component<TransformComponent>(entity);
-        auto& shader = Game::Instance()->get_ecs()->get_component<ShaderComponent>(entity);
-        auto& text = Game::Instance()->get_ecs()->get_component<TextComponent>(entity);
-        auto &dimension2D = Game::Instance()->get_ecs()->get_component<Dimensions2DComponent>(entity);
+        std::cout << "init text render\n ";
+        auto& transform = ecs->get_component<TransformComponent>(entity);
+        auto& shader = ecs->get_component<ShaderComponent>(entity);
+        auto& text = ecs->get_component<TextComponent>(entity);
+        auto &dimension2D = ecs->get_component<Dimensions2DComponent>(entity);
         
         dimension2D.height = PIXEL_HEIGHT; // tODO
         
@@ -37,7 +38,7 @@ void TextRenderSystem::init()
         
         
         shader.shader->use();
-        glm::mat4 projection = glm::ortho(0.0f, static_cast<float>(Game::Instance()->getScreenWidth()), 0.0f, static_cast<float>(Game::Instance()->getScreenHeight()));
+        glm::mat4 projection = glm::ortho(0.0f, static_cast<float>(game->getScreenWidth()), 0.0f, static_cast<float>(game->getScreenHeight()));
         glUniformMatrix4fv(glGetUniformLocation(shader.shader->program_id, "projection"), 1, GL_FALSE, &projection[0][0]);
         
         // TODO this may only need to be done once
@@ -116,10 +117,10 @@ void TextRenderSystem::render()
     for (auto const& entity : m_entities)
     {
         
-        auto &transform = Game::Instance()->get_ecs()->get_component<TransformComponent>(entity);
-        auto &shader = Game::Instance()->get_ecs()->get_component<ShaderComponent>(entity);
-        auto &text = Game::Instance()->get_ecs()->get_component<TextComponent>(entity);
-        auto &dimension2D = Game::Instance()->get_ecs()->get_component<Dimensions2DComponent>(entity);
+        auto &transform = ecs->get_component<TransformComponent>(entity);
+        auto &shader = ecs->get_component<ShaderComponent>(entity);
+        auto &text = ecs->get_component<TextComponent>(entity);
+        auto &dimension2D = ecs->get_component<Dimensions2DComponent>(entity);
         
         // activate corresponding render state
         shader.shader->use();

@@ -19,6 +19,10 @@
 #include <ecs/systems/MenuSystem.h>
 
 
+// created alias to reduce name lengths
+#define game Game::Instance()
+#define ecs Game::Instance()->get_ecs()
+
 class Game
 {
 public:

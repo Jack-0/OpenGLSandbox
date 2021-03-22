@@ -206,42 +206,42 @@ void Game::mouse_button_callback(GLFWwindow *window, int button, int action, int
 {
        //TODO
     if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS)
-        Game::Instance()->m_left_click = true;
+        game->m_left_click = true;
     else
-        Game::Instance()->m_left_click = false;
+        game->m_left_click = false;
 }
 
  void Game::mouse_callback(GLFWwindow* window, double xpos, double ypos)
 {
 
-    if (Game::Instance()->m_firstMouse)
+    if (game->m_firstMouse)
     {
-        Game::Instance()->m_lastMouseX = xpos;
-        Game::Instance()->m_lastMouseY = ypos;
-        Game::Instance()->m_firstMouse = false;
+        game->m_lastMouseX = xpos;
+        game->m_lastMouseY = ypos;
+        game->m_firstMouse = false;
     }
 
-    float xoffset = xpos - Game::Instance()->m_lastMouseX;
-    float yoffset = Game::Instance()->m_lastMouseY - ypos; // reversed since y-coordinates go from bottom to top
+    float xoffset = xpos - game->m_lastMouseX;
+    float yoffset = game->m_lastMouseY - ypos; // reversed since y-coordinates go from bottom to top
 
-    Game::Instance()->m_lastMouseX = xpos;
-    Game::Instance()->m_lastMouseY = ypos;
+    game->m_lastMouseX = xpos;
+    game->m_lastMouseY = ypos;
 
-    Game::Instance()->getCamera()->ProcessMouseMovement(xoffset, yoffset);
+    game->getCamera()->ProcessMouseMovement(xoffset, yoffset);
 }
 
 void Game::window_size_callback(GLFWwindow *window, int width, int height)
 {
     std::cout << "Window resized new width : height = " << width << " : " << height << "\n";
-    Game::Instance()->m_windowWidth = width;
-    Game::Instance()->m_windowHeight = height;
+    game->m_windowWidth = width;
+    game->m_windowHeight = height;
 }
 
 // changes view port size upon screen resize
 void Game::frame_buffer_size_callback(GLFWwindow* window, int width, int height)
 {
     glViewport(0,0, width, height);
-    Game::Instance()->render();
+    game->render();
 }
 
 

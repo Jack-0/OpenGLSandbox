@@ -25,7 +25,7 @@ void CubeDemoState::update()
 
 void CubeDemoState::render() {
     mesh_renderer->render();
-    //text_renderer->render(); // todo here error
+    text_renderer->render(); // todo here error
 
 }
 
@@ -33,34 +33,35 @@ bool CubeDemoState::onEnter(){
     std::cout  << "State \"" <<s_StateID << "\" loaded!" << std::endl;
     
     
-    // TODO text render
+    text_renderer = ecs->register_system<TextRenderSystem>();
     /*
-    text_renderer = Game::Instance()->get_ecs()->register_system<TextRenderSystem>();
     {
         Signature text_sig;
-        text_sig.set(Game::Instance()->get_ecs()->get_component_type_id<ShaderComponent>());
-        text_sig.set(Game::Instance()->get_ecs()->get_component_type_id<TransformComponent>());
-        text_sig.set(Game::Instance()->get_ecs()->get_component_type_id<TextComponent>());
-        text_sig.set(Game::Instance()->get_ecs()->get_component_type_id<Dimensions2DComponent>());
-        Game::Instance()->get_ecs()->set_system_sig<TextRenderSystem>(text_sig);
+        text_sig.set(ecs->get_component_type_id<ShaderComponent>());
+        text_sig.set(ecs->get_component_type_id<TransformComponent>());
+        text_sig.set(ecs->get_component_type_id<TextComponent>());
+        text_sig.set(ecs->get_component_type_id<Dimensions2DComponent>());
+        ecs->set_system_sig<TextRenderSystem>(text_sig);
     }
-    
-    Entity fps_text = Game::Instance()->get_ecs()->create_entity();
-    Game::Instance()->get_ecs()->add_component_to_entity(fps_text, ShaderComponent{"../res/shaders/text.vert", "../res/shaders/text.frag", NULL});
-    Game::Instance()->get_ecs()->add_component_to_entity(fps_text, TransformComponent{glm::vec3{100,100,0} ,glm::vec3 {0,0,0},glm::vec3 {1,1,1}});
-    Game::Instance()->get_ecs()->add_component_to_entity(fps_text, TextComponent{"HelloWorld", glm::vec3{255,255,255}, NULL, NULL, 1.0f});
-    Game::Instance()->get_ecs()->add_component_to_entity(fps_text, Dimensions2DComponent{0,0});
-    text_renderer->init();
     */
     
+    Entity fps_text = ecs->create_entity();
+    ecs->add_component_to_entity(fps_text, ShaderComponent{"../res/shaders/text.vert", "../res/shaders/text.frag", NULL});
+    ecs->add_component_to_entity(fps_text, TransformComponent{glm::vec3{10,game->getScreenHeight()-PIXEL_HEIGHT-10,0} ,glm::vec3 {0,0,0},glm::vec3 {1,1,1}});
+    ecs->add_component_to_entity(fps_text, TextComponent{"HelloWorld", glm::vec3{255,255,255}, NULL, NULL, 1.0f});
+    ecs->add_component_to_entity(fps_text, Dimensions2DComponent{0,0});
+    text_renderer->init();
+
+
+    
     // TODO here render a 3d MESH cube
-    mesh_renderer = Game::Instance()->get_ecs()->register_system<MeshRenderSystem>(); // TODO maybe a state should have it's own ECS
+    mesh_renderer = ecs->register_system<MeshRenderSystem>(); // TODO maybe a state should have it's own ECS
     {
         Signature mesh_sig;
-        mesh_sig.set(Game::Instance()->get_ecs()->get_component_type_id<MeshComponent>());
-        mesh_sig.set(Game::Instance()->get_ecs()->get_component_type_id<ShaderComponent>());
-        mesh_sig.set(Game::Instance()->get_ecs()->get_component_type_id<TransformComponent>());
-        Game::Instance()->get_ecs()->set_system_sig<MeshRenderSystem>(mesh_sig);
+        mesh_sig.set(ecs->get_component_type_id<MeshComponent>());
+        mesh_sig.set(ecs->get_component_type_id<ShaderComponent>());
+        mesh_sig.set(ecs->get_component_type_id<TransformComponent>());
+        ecs->set_system_sig<MeshRenderSystem>(mesh_sig);
     }
     
     std::default_random_engine rand;
@@ -101,12 +102,12 @@ bool CubeDemoState::onEnter(){
         glm::vec3 scale = {1.0f, 1.0f, 1.0f};
 
         
-        Entity cube = Game::Instance()->get_ecs()->create_entity();
-        Game::Instance()->get_ecs()->add_component_to_entity(cube, MeshComponent{"../res/object/cube/cube.obj", NULL});
-        Game::Instance()->get_ecs()->add_component_to_entity(cube, ShaderComponent{"../res/shaders/model_loading.vert",
+        Entity cube = ecs->create_entity();
+        ecs->add_component_to_entity(cube, MeshComponent{"../res/object/cube/cube.obj", NULL});
+        ecs->add_component_to_entity(cube, ShaderComponent{"../res/shaders/model_loading.vert",
                                                                                    "../res/shaders/model_loading.frag",
                                                                                    NULL});
-        Game::Instance()->get_ecs()->add_component_to_entity(cube, TransformComponent{pos,rotation,scale});
+        ecs->add_component_to_entity(cube, TransformComponent{pos,rotation,scale});
     }
     auto t2 = high_resolution_clock::now();
     mesh_renderer->init();

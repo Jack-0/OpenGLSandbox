@@ -7,20 +7,21 @@
 const int WINDOW_WIDTH = 800;
 const int WINDOW_HEIGHT = 600;
 
+
 int main()
 {
-    if (Game::Instance()->init(WINDOW_WIDTH, WINDOW_HEIGHT) == -1)
+    if (game->init(WINDOW_WIDTH, WINDOW_HEIGHT) == -1)
         return -1;
 
-    while ( Game::Instance()->running() )
+    while ( game->running() )
     {
-        Game::Instance()->handleEvents();
-        Game::Instance()->update();
-        Game::Instance()->render();
-        Game::Instance()->calculate_fps();
+        game->handleEvents();
+        game->update();
+        game->render();
+        game->calculate_fps();
     }
 
-    Game::Instance()->clean();
+    game->clean();
     return 0;
 }
 
