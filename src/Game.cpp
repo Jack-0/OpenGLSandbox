@@ -64,14 +64,8 @@ int Game::init_gl()
     // set window minimum size
     glfwSetWindowSizeLimits(m_window, windowWidth, windowHeight, 1920, 1080);
 
-    ///glfwSetFramebufferSizeCallback(m_window, framebuffer_size_callback);
-    ///glfwSetCursorPosCallback(m_window, mouse_callback);
-    ///glfwSetScrollCallback(m_window, scroll_callback);
-    
-
-    // tell GLFW to capture our mouse
+    // set mouse input mode
     glfwSetInputMode(m_window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-    //glfwSetInputMode(m_window, GLFW_CURSOR, GLFW_CURSOR_NORMAL); // TODO: FOR DEBUG to keep mouse upon error
 
     // glad: load all OpenGL function pointers
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
@@ -79,13 +73,9 @@ int Game::init_gl()
         std::cout << "Failed to initialize GLAD" << std::endl;
         return -1;
     }
-
-    // tell stb_image.h to flip loaded texture's on the y-axis (before loading model).
-    //stbi_set_flip_vertically_on_load(true);
-
+    
     // configure global opengl state
     glEnable(GL_DEPTH_TEST);
-
     
     return 0;
 }
@@ -102,7 +92,6 @@ int Game::init(int window_width, int window_height)
     // set camera pointer
     m_camera = new Camera (glm::vec3(0.0f, 0.0f, 3.0f));
 
-
     // set game state to running
     m_running = true;
 
@@ -115,6 +104,7 @@ int Game::init(int window_width, int window_height)
     glfwSetWindowSizeCallback(m_window, window_size_callback);
     glfwSetMouseButtonCallback(m_window, mouse_button_callback);
     glfwSetFramebufferSizeCallback(m_window, frame_buffer_size_callback);
+    glfwSetKeyCallback(m_window, key_callback);
     
     // set last mouse pos TODO review this
     m_lastMouseX = m_windowWidth / 2.0f;
@@ -126,6 +116,7 @@ int Game::init(int window_width, int window_height)
     // init entity component system
     init_ecs();
     
+
     // init state machine and start the Game in the MenuState
     m_pGameStateMachine = new GameStateMachine();
     m_pGameStateMachine->changeState(new MenuState());
@@ -141,25 +132,32 @@ void Game::handleEvents()
         m_running = false;
 
     // if escape is pressed close the window
-    if (glfwGetKey(m_window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
+    if (game->get_key(GLFW_KEY_ESCAPE) == GLFW_PRESS)
         glfwSetWindowShouldClose(m_window, true);
 
     // camera
-    if (glfwGetKey(m_window, GLFW_KEY_W) == GLFW_PRESS)
+    // NOTE camera is dependent on this code here we could create a camera entity?
+    if (game->get_key(GLFW_KEY_W) != GLFW_RELEASE)
         m_camera->ProcessKeyboard(FORWARD, m_deltaTime);
-    if (glfwGetKey(m_window, GLFW_KEY_S) == GLFW_PRESS)
+    if (game->get_key(GLFW_KEY_S) != GLFW_RELEASE)
         m_camera->ProcessKeyboard(BACKWARD, m_deltaTime);
-    if (glfwGetKey(m_window, GLFW_KEY_A) == GLFW_PRESS)
+    if (game->get_key(GLFW_KEY_A) != GLFW_RELEASE)
         m_camera->ProcessKeyboard(LEFT, m_deltaTime);
-    if (glfwGetKey(m_window, GLFW_KEY_D) == GLFW_PRESS)
+    if (game->get_key(GLFW_KEY_D) != GLFW_RELEASE)
         m_camera->ProcessKeyboard(RIGHT, m_deltaTime);
     
-    if (glfwGetKey(m_window, GLFW_KEY_E) == GLFW_PRESS)
-        glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
-    
-    if (glfwGetKey(m_window, GLFW_KEY_F) == GLFW_PRESS)
+    // TODO debug code for looking at polygons can be deprecated 
+    if (game->get_key(GLFW_KEY_E) != GLFW_RELEASE)
+        glPolygonMode( GL_FRONT_AND_BACK, GL_LINE);
+    if (game->get_key(GLFW_KEY_F) != GLFW_RELEASE)
         glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
 }
+
+void Game::key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
+{
+    game->set_key(key, action);
+}
+
 
 void Game::update()
 {
@@ -242,19 +240,6 @@ void Game::frame_buffer_size_callback(GLFWwindow* window, int width, int height)
 {
     glViewport(0,0, width, height);
     game->render();
-}
-
-
-template<typename T>
-void Game::ecs_register_component()
-{
-    m_ecs->register_component<T>();
-}
-
-template<typename T>
-void Game::ecs_register_system()
-{
-  m_ecs->register_system<T>();
 }
 
 void Game::init_ecs()

@@ -38,7 +38,6 @@ public:
         }
     }
 
-
     int init(int window_width, int window_height);
     
     // core
@@ -65,15 +64,6 @@ public:
     bool m_left_click = false; // TODO bit of a hack try subscriber model
 
 
-    // ECS wrappers
-    template<typename T>
-    void ecs_register_component();
-    
-    template<typename T>
-    void ecs_register_system();
-    
-    
-    
     // pointers
     GameStateMachine* getStateMachine() { return m_pGameStateMachine; }
     GLFWwindow* getWindow() { return m_window; }
@@ -82,19 +72,21 @@ public:
     // ecs
     ECSManager* get_ecs() { return m_ecs; }
 
+    // check if a key is down
+    int get_key(int key) {return keys[key]; }
+
 private:
 
     // pointer to the Entity component system
     ECSManager* m_ecs;
-    
-    // systems
  
     // callbacks
     static void mouse_callback(GLFWwindow* window, double xpos, double ypos); // TODO
     static void window_size_callback(GLFWwindow* window, int width, int height);
     static void mouse_button_callback(GLFWwindow* window, int button, int action, int mods);
-    static void frame_buffer_size_callback(GLFWwindow* window, int width, int height);
-    
+    static void frame_buffer_size_callback(GLFWwindow* window, int width, int height);    
+    static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods);
+
     // init ecs
     void init_ecs();
     // init system
@@ -107,6 +99,9 @@ private:
     int m_windowWidth;
     int m_windowHeight;
 
+    // keyboard input
+    int keys[348]; // 348 keys defined in glfw spec 
+    void set_key (int key, int action) { keys[key] = action; } 
 
     Game() {}
 
