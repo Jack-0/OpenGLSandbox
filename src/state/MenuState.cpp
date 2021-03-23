@@ -104,7 +104,7 @@ bool MenuState::onExit()
     glfwSetInputMode(game->getWindow(), GLFW_CURSOR, GLFW_CURSOR_DISABLED); // hide mouse TODO UNCOMMENT
 }
 
-// bug due to callback state changes before we can clean
+// bug due to callback state changes before we can clean ... Maybe remove callbacks with observer pattern?
 void MenuState::demo1()
 {
     game->getStateMachine()->changeState(new CubeDemoState());
