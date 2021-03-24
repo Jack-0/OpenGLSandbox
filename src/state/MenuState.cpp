@@ -5,6 +5,7 @@
 #include <iostream>
 #include "MenuState.h"
 #include "CubeDemoState.h"
+#include "ModelShowState.h"
 
 #include <Game.h>
 #include <GLFW/glfw3.h>
@@ -76,7 +77,7 @@ bool MenuState::onEnter()
     Entity demo2_text = ecs->create_entity();
     ecs->add_component_to_entity(demo2_text, ShaderComponent{"../res/shaders/text.vert", "../res/shaders/text.frag", NULL});
     ecs->add_component_to_entity(demo2_text, TransformComponent{glm::vec3{30,game->getScreenHeight()-PIXEL_HEIGHT-1 - PIXEL_HEIGHT*4,0} ,glm::vec3 {0,0,0},glm::vec3 {1,1,1}});
-    ecs->add_component_to_entity(demo2_text, TextComponent{"> Demo", glm::vec3{255,255,255}, NULL, NULL, 1.0f});
+    ecs->add_component_to_entity(demo2_text, TextComponent{"> Model", glm::vec3{255,255,255}, NULL, NULL, 1.0f});
     ecs->add_component_to_entity(demo2_text, Dimensions2DComponent{0,0});
     ecs->add_component_to_entity(demo2_text, FunctionPointerComponent{demo2});
     
@@ -112,7 +113,7 @@ void MenuState::demo1()
 
 void MenuState::demo2()
 {
-    game->getStateMachine()->changeState(new CubeDemoState());
+    game->getStateMachine()->changeState(new ModelShowState());
 }
 
 void MenuState::exit()
