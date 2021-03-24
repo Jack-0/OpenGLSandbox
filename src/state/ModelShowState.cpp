@@ -21,6 +21,9 @@ void ModelShowState::render()
 
 bool ModelShowState::onEnter()
 {
+    // get stb_image.h to flip loaded texture's on the y-axis 
+    stbi_set_flip_vertically_on_load(true);
+
     mesh_renderer = ecs->register_system<MeshRenderSystem>(); // TODO maybe a state should have it's own ECS
     {
         Signature mesh_sig;
@@ -36,7 +39,7 @@ bool ModelShowState::onEnter()
 
     
     Entity cube = ecs->create_entity();
-    ecs->add_component_to_entity(cube, MeshComponent{"../res/object/cube/cube.obj", NULL});
+    ecs->add_component_to_entity(cube, MeshComponent{"../res/object/backpack/backpack.obj", NULL});
     ecs->add_component_to_entity(cube, ShaderComponent{"../res/shaders/model_loading.vert",
                                                                                 "../res/shaders/model_loading.frag",
                                                                                 NULL});
