@@ -35,16 +35,17 @@ bool ModelShowState::onEnter()
 
     glm::vec3 pos = {0, 0, 0};
     glm::vec3 rotation = {0,0,0};
-    glm::vec3 scale = {1.0f, 1.0f, 1.0f};
+    glm::vec3 scale = {0.2f, 0.2f, 0.2f};
 
     
-    Entity cube = ecs->create_entity();
-    ecs->add_component_to_entity(cube, MeshComponent{"../res/object/backpack/backpack.obj", NULL});
-    ecs->add_component_to_entity(cube, ShaderComponent{"../res/shaders/model_loading.vert",
+    Entity model = ecs->create_entity();
+    ecs->add_component_to_entity(model, MeshComponent{"../res/object/person/person.obj", NULL});
+    ecs->add_component_to_entity(model, ShaderComponent{"../res/shaders/model_loading.vert",
                                                                                 "../res/shaders/model_loading.frag",
                                                                                 NULL});
-    ecs->add_component_to_entity(cube, TransformComponent{pos,rotation,scale});
+    ecs->add_component_to_entity(model, TransformComponent{pos,rotation,scale});
 
+    //glShadeModel(GL_SMOOTH);
     mesh_renderer->init();
 }
 
