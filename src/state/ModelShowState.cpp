@@ -16,13 +16,17 @@ void ModelShowState::update()
 
 void ModelShowState::render()
 {
+    m_skybox->render();
     mesh_renderer->render();
 }
 
 bool ModelShowState::onEnter()
 {
+    // init skybox
+    m_skybox = new SkyBox("../res/skybox/field/");
+    
     // get stb_image.h to flip loaded texture's on the y-axis 
-    stbi_set_flip_vertically_on_load(true);
+    //stbi_set_flip_vertically_on_load(true); // TODO some texures need this
 
     mesh_renderer = ecs->register_system<MeshRenderSystem>(); // TODO maybe a state should have it's own ECS
     {
@@ -39,7 +43,7 @@ bool ModelShowState::onEnter()
 
     
     Entity model = ecs->create_entity();
-    ecs->add_component_to_entity(model, MeshComponent{"../res/object/person/person.obj", NULL});
+    ecs->add_component_to_entity(model, MeshComponent{"../res/object/gun/Handgun_obj.obj", NULL});
     ecs->add_component_to_entity(model, ShaderComponent{"../res/shaders/model_loading.vert",
                                                                                 "../res/shaders/model_loading.frag",
                                                                                 NULL});

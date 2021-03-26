@@ -9,6 +9,7 @@
 //#define STB_IMAGE_IMPLEMENTATION
 #include <graphics/Shader.h>
 #include <graphics/Model.h>
+#include <graphics/SkyBox.h>
 
 
 #include "GameState.h"
@@ -34,6 +35,8 @@ public:
 private:
     static const std::string s_StateID;
     
+    SkyBox* m_skybox;
+
     std::shared_ptr<MeshRenderSystem> mesh_renderer;
 };
 
