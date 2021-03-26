@@ -69,15 +69,22 @@ SkyBox::SkyBox(const char* directory_path)
     glEnableVertexAttribArray(0);
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
 
-    // todo concat strings CHECK HERE IF ERROR
+    // add the file name to the directory path
+    std::string right = std::string(directory_path) + "right.jpg";
+    std::string left = std::string(directory_path) + "left.jpg";
+    std::string top = std::string(directory_path) + "top.jpg";
+    std::string bottom = std::string(directory_path) + "bottom.jpg";
+    std::string front = std::string(directory_path) + "front.jpg";
+    std::string back = std::string(directory_path) + "back.jpg";
+    // get the system filepath for the given directory path
     std::vector<std::string> faces
     {
-        std::filesystem::path("../res/skybox/field/right.jpg"),
-        std::filesystem::path("../res/skybox/field/left.jpg"),
-        std::filesystem::path("../res/skybox/field/top.jpg"),
-        std::filesystem::path("../res/skybox/field/bottom.jpg"),
-        std::filesystem::path("../res/skybox/field/front.jpg"),
-        std::filesystem::path("../res/skybox/field/back.jpg")
+        std::filesystem::path(right),
+        std::filesystem::path(left),
+        std::filesystem::path(top),
+        std::filesystem::path(bottom),
+        std::filesystem::path(front),
+        std::filesystem::path(back)
     };
 
     m_cubemap_texture = load_cubemap(faces);
