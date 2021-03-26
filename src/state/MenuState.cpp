@@ -92,7 +92,8 @@ bool MenuState::onEnter()
     // init the text system todo review
     m_text_system->init();
 
-    m_entities.push_back(title_text);
+    // TODO this needs to be handled on creation of an entity - MAYBE A STATE SHOULD HAVE ADD ENTITY OPTION instead of using game ecs()
+    m_entities.push_back(title_text); 
     m_entities.push_back(demo1_text);
     m_entities.push_back(demo2_text);
     m_entities.push_back(exit_text);
