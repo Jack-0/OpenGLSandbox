@@ -39,7 +39,6 @@ private:
     static void demo1();
     static void demo2();
     static void exit();
-    std::vector<Entity> m_entities; 
     std::shared_ptr<TextRenderSystem> m_text_system;
     std::shared_ptr<MenuSystem> m_menu_system;
 };

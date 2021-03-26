@@ -21,6 +21,12 @@ const std::string CubeDemoState::s_StateID = "CUBE_DEMO_STATE";
 
 void CubeDemoState::update()
 {
+    // todo test deleting enities
+    if( game->get_key(GLFW_KEY_Q) == GLFW_PRESS )
+    {
+        ecs->destroy_entity(m_entities.front());
+        m_entities.erase(m_entities.begin());
+    }
 }
 
 void CubeDemoState::render() {
@@ -33,7 +39,7 @@ bool CubeDemoState::onEnter(){
     std::cout  << "State \"" <<s_StateID << "\" loaded!" << std::endl;
     
     
-    text_renderer = ecs->register_system<TextRenderSystem>();
+    text_renderer = ecs->register_system<TextRenderSystem>(); // todo fix
     /*
     {
         Signature text_sig;
@@ -108,6 +114,8 @@ bool CubeDemoState::onEnter(){
                                                                                    "../res/shaders/model_loading.frag",
                                                                                    NULL});
         ecs->add_component_to_entity(cube, TransformComponent{pos,rotation,scale});
+
+        m_entities.push_back(cube);
     }
     auto t2 = high_resolution_clock::now();
     mesh_renderer->init();
