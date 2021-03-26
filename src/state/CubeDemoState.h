@@ -8,7 +8,7 @@
 #include <std_image.h>
 //#define STB_IMAGE_IMPLEMENTATION
 #include <graphics/Shader.h>
-#include <util/Model.h>
+#include <graphics/Model.h>
 
 
 #include "GameState.h"

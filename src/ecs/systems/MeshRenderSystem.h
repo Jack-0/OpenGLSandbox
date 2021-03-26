@@ -9,7 +9,7 @@
 #include <ecs/core/System.h>
 #include <map>
 #include <string>
-#include <util/Model.h>
+#include <graphics/Model.h>
 #include <memory>
 
 class MeshRenderSystem : public System

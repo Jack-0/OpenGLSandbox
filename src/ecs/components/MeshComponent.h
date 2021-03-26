@@ -5,7 +5,7 @@
 #ifndef OPENGLSANDBOX_MESHCOMPONENT_H
 #define OPENGLSANDBOX_MESHCOMPONENT_H
 
-#include <util/Model.h>
+#include <graphics/Model.h>
 #include <graphics/Shader.h>
 
 struct MeshComponent
