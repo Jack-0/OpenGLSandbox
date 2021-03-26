@@ -134,6 +134,7 @@ void TextRenderSystem::render()
         std::string::const_iterator c;
         for (c = text.text.begin(); c != text.text.end(); c++)
         {
+            // todo we probably only need to do this bit once or on string updates .. . . .
             Character ch = characters[*c];
             
             float x = temp_x + ch.Bearing.x * text.scale;
@@ -151,6 +152,8 @@ void TextRenderSystem::render()
                     {  x + w, y,       1.0f, 1.0f },
                     {  x + w, y + h,   1.0f, 0.0f }
             };
+            // todo end --------- .. . . . .  _-_ _-_ _-_
+
             // render glyph texture over quad
             glBindTexture(GL_TEXTURE_2D, ch.TextureID);
             // update content of VBO memory
