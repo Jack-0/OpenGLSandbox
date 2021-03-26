@@ -30,14 +30,16 @@ void CubeDemoState::update()
 }
 
 void CubeDemoState::render() {
+    m_skybox->render();
     mesh_renderer->render();
     text_renderer->render(); // todo here error
-
 }
 
 bool CubeDemoState::onEnter(){
     std::cout  << "State \"" <<s_StateID << "\" loaded!" << std::endl;
     
+    // init skybox
+    m_skybox = new SkyBox("../res/skybox/field/");
     
     text_renderer = ecs->register_system<TextRenderSystem>(); // todo fix
     /*
