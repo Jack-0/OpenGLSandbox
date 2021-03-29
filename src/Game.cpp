@@ -76,6 +76,9 @@ int Game::init_gl()
     
     // configure global opengl state
     glEnable(GL_DEPTH_TEST);
+
+    // Debug options
+    glEnable(GL_DEBUG_OUTPUT);
     
     return 0;
 }
@@ -105,6 +108,9 @@ int Game::init(int window_width, int window_height)
     glfwSetMouseButtonCallback(m_window, mouse_button_callback);
     glfwSetFramebufferSizeCallback(m_window, frame_buffer_size_callback);
     glfwSetKeyCallback(m_window, key_callback);
+    // debug call back
+    glDebugMessageCallback(debug_callback, 0);
+    glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
     
     // set last mouse pos TODO review this
     m_lastMouseX = m_windowWidth / 2.0f;
@@ -234,6 +240,13 @@ void Game::window_size_callback(GLFWwindow *window, int width, int height)
     game->m_windowWidth = width;
     game->m_windowHeight = height;
 }
+
+// prints out error messages thrown by the opengl debug callback
+void Game::debug_callback(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, const GLchar* message, const void* userParam)
+{
+    std::cout << "GL ERROR = " << message << "\n";
+}
+
 
 // changes view port size upon screen resize
 void Game::frame_buffer_size_callback(GLFWwindow* window, int width, int height)
