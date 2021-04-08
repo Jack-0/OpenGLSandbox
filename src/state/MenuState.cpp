@@ -6,6 +6,7 @@
 #include "MenuState.h"
 #include "CubeDemoState.h"
 #include "ModelShowState.h"
+#include "PracticeState.h"
 
 #include <Game.h>
 #include <GLFW/glfw3.h>
@@ -82,13 +83,23 @@ bool MenuState::onEnter()
     ecs->add_component_to_entity(demo2_text, FunctionPointerComponent{demo2});
     
     // create menu button component
+    Entity demo3_text = ecs->create_entity();
+    ecs->add_component_to_entity(demo3_text, ShaderComponent{"../res/shaders/text.vert", "../res/shaders/text.frag", NULL});
+    ecs->add_component_to_entity(demo3_text, TransformComponent{glm::vec3{30,game->getScreenHeight()-PIXEL_HEIGHT-1 - PIXEL_HEIGHT*6,0} ,glm::vec3 {0,0,0},glm::vec3 {1,1,1}});
+    ecs->add_component_to_entity(demo3_text, TextComponent{"> Practice", glm::vec3{255,255,255}, NULL, NULL, 1.0f});
+    ecs->add_component_to_entity(demo3_text, Dimensions2DComponent{0,0});
+    ecs->add_component_to_entity(demo3_text, FunctionPointerComponent{demo3});
+    
+    // create menu button component
     Entity exit_text = ecs->create_entity();
     ecs->add_component_to_entity(exit_text, ShaderComponent{"../res/shaders/text.vert", "../res/shaders/text.frag", NULL});
-    ecs->add_component_to_entity(exit_text, TransformComponent{glm::vec3{30,game->getScreenHeight()-PIXEL_HEIGHT-1 - PIXEL_HEIGHT*6,0} ,glm::vec3 {0,0,0},glm::vec3 {1,1,1}});
+    ecs->add_component_to_entity(exit_text, TransformComponent{glm::vec3{30,game->getScreenHeight()-PIXEL_HEIGHT-1 - PIXEL_HEIGHT*8,0} ,glm::vec3 {0,0,0},glm::vec3 {1,1,1}});
     ecs->add_component_to_entity(exit_text, TextComponent{"> Exit", glm::vec3{255,255,255}, NULL, NULL, 1.0f});
     ecs->add_component_to_entity(exit_text, Dimensions2DComponent{0,0});
     ecs->add_component_to_entity(exit_text, FunctionPointerComponent{exit});
     
+
+
     // init the text system todo review
     m_text_system->init();
 
@@ -96,6 +107,7 @@ bool MenuState::onEnter()
     m_entities.push_back(title_text); 
     m_entities.push_back(demo1_text);
     m_entities.push_back(demo2_text);
+    m_entities.push_back(demo3_text);
     m_entities.push_back(exit_text);
 }
 
@@ -115,6 +127,11 @@ void MenuState::demo1()
 void MenuState::demo2()
 {
     game->getStateMachine()->changeState(new ModelShowState());
+}
+
+void MenuState::demo3()
+{
+    game->getStateMachine()->changeState(new PracticeState());
 }
 
 void MenuState::exit()

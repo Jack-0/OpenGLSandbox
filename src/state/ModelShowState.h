@@ -36,7 +36,6 @@ private:
     static const std::string s_StateID;
     
     SkyBox* m_skybox;
-
     std::shared_ptr<MeshRenderSystem> mesh_renderer;
 };
 
