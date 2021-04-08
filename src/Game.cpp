@@ -151,6 +151,8 @@ void Game::handleEvents()
         m_camera->ProcessKeyboard(LEFT, m_deltaTime);
     if (game->get_key(GLFW_KEY_D) != GLFW_RELEASE)
         m_camera->ProcessKeyboard(RIGHT, m_deltaTime);
+    if (game->get_key(GLFW_KEY_LEFT_CONTROL) != GLFW_RELEASE)
+        m_camera->ProcessKeyboard(FAST, m_deltaTime);
     
     // TODO debug code for looking at polygons can be deprecated 
     if (game->get_key(GLFW_KEY_E) != GLFW_RELEASE)
