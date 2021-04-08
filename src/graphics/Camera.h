@@ -16,7 +16,8 @@ enum Camera_Movement {
     FORWARD,
     BACKWARD,
     LEFT,
-    RIGHT
+    RIGHT,
+    FAST
 };
 
 // Default camera values
@@ -74,6 +75,13 @@ public:
     void ProcessKeyboard(Camera_Movement direction, float deltaTime)
     {
         float velocity = MovementSpeed * deltaTime;
+        // increase camera speed
+        if (direction == FAST)
+            MovementSpeed = SPEED * 4;
+        else
+            MovementSpeed = SPEED;
+
+        // change camera direction
         if (direction == FORWARD)
             Position += Front * velocity;
         if (direction == BACKWARD)
