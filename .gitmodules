@@ -1,0 +1,3 @@
+[submodule "include/assimp-5.2.5"]
+	path = include/assimp-5.2.5
+	url = https://github.com/assimp/assimp
