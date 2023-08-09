@@ -7,16 +7,18 @@ The project has now turned into a sort of small game engine. :see_no_evil:
 
 The code is compiled using cmake.
 Code compiles and runs on both Linux and Windows.
+include files maybe git submodules 
 
 ## How to install on linux
 
-1. `$ git clone https://github.com/Jack-0/OpenGLSandbox` <br> 
-2. `$ cd OpenGLSandbox` <br>
-3. `$ mkdir build` <br>
-4. `$ cd build` <br>
-5. `$ cmake ..` <br>
-6. `$ make -j7` <br>
-7. `$ ./OpenGLSandbox` <br> 
+1. `git clone https://github.com/Jack-0/OpenGLSandbox` <br> 
+2. `cd OpenGLSandbox` <br>
+3. `git submodule update --init --recursive`
+4. `mkdir build` <br>
+5. `cd build` <br>
+6. `cmake ..` <br>
+7. `make -j7` <br>
+8. `./OpenGLSandbox` <br> 
 
 ## Dependencies
 
