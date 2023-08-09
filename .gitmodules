@@ -1,3 +1,6 @@
 [submodule "include/assimp-5.2.5"]
 	path = include/assimp-5.2.5
 	url = https://github.com/assimp/assimp
+[submodule "include/assimp-4.0.1"]
+	path = include/assimp-4.0.1
+	url = https://github.com/assimp/assimp
